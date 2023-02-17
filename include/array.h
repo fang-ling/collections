@@ -1,6 +1,6 @@
 //
 //  array.h
-//  array
+//  c-collections
 //
 //  Created by Fang Ling on 2023/1/16.
 //

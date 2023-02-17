@@ -1,6 +1,6 @@
 //
 //  types.h
-//  array
+//  c-collections
 //
 //  Created by Fang Ling on 2023/1/16.
 //
@@ -24,5 +24,7 @@ typedef uint8_t UInt8;
 typedef bool Bool;
 
 typedef double Double;
+
+typedef char Char;
 
 #endif /* types_h */

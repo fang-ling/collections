@@ -1,6 +1,6 @@
 //
 //  test.c
-//  array
+//  c-collections
 //
 //  Created by Fang Ling on 2023/1/17.
 //
@@ -22,8 +22,18 @@
 #define T_GRN "\x1B[32m"
 #define T_RST "\x1B[0m"
 
+/** Begin: Private helpers **/
+void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {
+    printf("Test Case '-[%s Test %s()]' started.\n", ds, fn);
+    var result = test_function();
+    printf("Test Case '-[%s Test %s()]' ", ds, fn);
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+}
+/** End: Private helpers **/
+
 /** Begin: Creating an array **/
-Bool test_init() {
+Bool test_array_init() {
     var array = array_init(sizeof(Int));
     return
         array -> is_empty == true &&
@@ -31,7 +41,7 @@ Bool test_init() {
         array -> count == 0;
 }
 
-Bool test_init2() {
+Bool test_array_init2() {
     var array = array_init2(sizeof(Int), 9);
     return
         array -> is_empty == false &&
@@ -39,7 +49,7 @@ Bool test_init2() {
         array -> count == 9;
 }
 
-Bool test_init3() {
+Bool test_array_init3() {
     var repeated_value = 8ll;
     var array = array_init3(sizeof(Int), &repeated_value, 5);
     var data_check = true;
@@ -59,13 +69,13 @@ Bool test_init3() {
 /** End: Creating an array **/
 
 /** Begin: Accessing Elements **/
-Bool test_get() {
+Bool test_array_get() {
     var value = 12333ll;
     var array = array_init3(sizeof(Int), &value, 19358);
     return *(Int*)array_get(array, 12333) == value;
 }
 
-Bool test_set() {
+Bool test_array_set() {
     var value = 12333ll;
     var array = array_init3(sizeof(Int), &value, 19358);
     value = 19348ll;
@@ -73,7 +83,7 @@ Bool test_set() {
     return *(Int*)array_get(array, 12333) == value;
 }
 
-Bool test_first() {
+Bool test_array_first() {
     var array = array_init(sizeof(Int));
     var value = 12333ll;
     var array2 = array_init3(sizeof(Int), &value, 19358);
@@ -82,7 +92,7 @@ Bool test_first() {
         *(Int*)array_first(array2) == value;
 }
 
-Bool test_last() {
+Bool test_array_last() {
     var array =	array_init(sizeof(Int));
     var value = 12333ll;
     var array2 = array_init3(sizeof(Int), &value, 19358);
@@ -91,14 +101,14 @@ Bool test_last() {
         *(Int*)array_last(array2) == value;
 }
 
-Bool test_random_element() {
+Bool test_array_random_element() {
     // TO-DO;
     return true;
 }
 /** End: Accessing Elements **/
 
 /** Begin: Adding Elements **/
-Bool test_append() {
+Bool test_array_append() {
     Int buf[] = {1, 2, 3, 4, 5};
     var delta = 100ll;
     var array = array_init(sizeof(Int));
@@ -115,7 +125,7 @@ Bool test_append() {
     return *(Int*)array_get(array, 5) == delta;
 }
 
-Bool test_insert() {
+Bool test_array_insert() {
     Int buf[] = {19358, 19358, 19358, 100, 19358, 19358, 200};
     var value = 19358ll;
     var array = array_init3(sizeof(Int), &value, 5);
@@ -150,7 +160,7 @@ Bool test_insert() {
 /** End: Adding Elements **/
 
 /** Begin: Combining Arrays **/
-Bool test_append2() {
+Bool test_array_append2() {
     var delta = 12333ll;
     var lhs = array_init3(sizeof(Int), &delta, 3);
     Int buf[] = {12333, 12333, 12333, 19358, 19358,
@@ -170,7 +180,7 @@ Bool test_append2() {
 /** End: Combining Arrays **/
 
 /** Begin: Removing Elements **/
-Bool test_remove() {
+Bool test_array_remove() {
     Int buf[] = {12333, 19358, 19348, 12321};
     var array = array_init(sizeof(Int));
     /* Test empty array remove */
@@ -220,7 +230,7 @@ Bool test_remove() {
     return true;
 }
 
-Bool test_remove_first() {
+Bool test_array_remove_first() {
     Int buf[] = {12333, 19358, 19348, 12321, 89, 1989};
     var array = array_init(sizeof(Int));
     for (var i = 0; i < 6; i += 1) {
@@ -245,7 +255,7 @@ Bool test_remove_first() {
     return true;
 }
 
-Bool test_remove_last() {
+Bool test_array_remove_last() {
     Int buf[] = {12333, 19358, 19348, 12321, 89, 1989};
     var array = array_init(sizeof(Int));
     for (var i = 0; i < 6; i += 1) {
@@ -272,7 +282,7 @@ Bool test_remove_last() {
 /** End: Removing Elements **/
 
 /** Begin: Reordering an Array’s Elements**/
-Bool test_swap_at() {
+Bool test_array_swap_at() {
     Int buf[] = {12333, 19358, 19348, 12321, 12361, 19333};
     var array = array_init(sizeof(Int));
     for (var i = 0; i < 6; i += 1) {
@@ -303,95 +313,21 @@ Int32 main(void) {
 
     printf("Test Suite 'Array Test' started at %s\n", time_buf);
 
-    printf("Test Case '-[Array Test test_init()]' started.\n");
-    var result = test_init();
-    printf("Test Case '-[Array Test test_init()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_init2()]' started.\n");
-    result = test_init2();
-    printf("Test Case '-[Array Test test_init2()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_init3()]' started.\n");
-    result = test_init3();
-    printf("Test Case '-[Array Test test_init3()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_get()]' started.\n");
-    result = test_get();
-    printf("Test Case '-[Array Test test_get()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_set()]' started.\n");
-    result = test_set();
-    printf("Test Case '-[Array Test test_set()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_first()]' started.\n");
-    result = test_first();
-    printf("Test Case '-[Array Test test_first()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_last()]' started.\n");
-    result = test_last();
-    printf("Test Case '-[Array Test test_last()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_random_element()]' started.\n");
-    result = test_random_element();
-    printf("Test Case '-[Array Test test_random_element()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_append()]' started.\n");
-    result = test_append();
-    printf("Test Case '-[Array Test test_append()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_insert()]' started.\n");
-    result = test_insert();
-    printf("Test Case '-[Array Test test_insert()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_append2()]' started.\n");
-    result = test_append2();
-    printf("Test Case '-[Array Test test_append2()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_remove()]' started.\n");
-    result = test_remove();
-    printf("Test Case '-[Array Test test_remove()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_remove_first()]' started.\n");
-    result = test_remove_first();
-    printf("Test Case '-[Array Test test_remove_first()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_remove_last()]' started.\n");
-    result = test_remove_last();
-    printf("Test Case '-[Array Test test_remove_last()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
-
-    printf("Test Case '-[Array Test test_swap_at()]' started.\n");
-    result = test_swap_at();
-    printf("Test Case '-[Array Test test_swap_at()]' ");
-    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
-    printf(".\n");
+    run_test("Array", "test_array_init", test_array_init);
+    run_test("Array", "test_array_init2", test_array_init2);
+    run_test("Array", "test_array_init3", test_array_init3);
+    run_test("Array", "test_array_get", test_array_get);
+    run_test("Array", "test_array_set", test_array_set);
+    run_test("Array", "test_array_first", test_array_first);
+    run_test("Array", "test_array_last", test_array_last);
+    run_test("Array", "test_array_random_element", test_array_random_element);
+    run_test("Array", "test_array_append", test_array_append);
+    run_test("Array", "test_array_insert", test_array_insert);
+    run_test("Array", "test_array_append2", test_array_append2);
+    run_test("Array", "test_array_remove", test_array_remove);
+    run_test("Array", "test_array_remove_first", test_array_remove_first);
+    run_test("Array", "test_array_remove_last", test_array_remove_last);
+    run_test("Array", "test_array_swap_at", test_array_swap_at);
 
     return 0;
 }

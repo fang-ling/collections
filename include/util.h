@@ -1,6 +1,6 @@
 //
 //  util.h
-//  array
+//  c-collections
 //
 //  Created by Fang Ling on 2023/2/9.
 //
