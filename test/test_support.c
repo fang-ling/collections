@@ -6,8 +6,16 @@
 //
 
 #include "test_support.h"
-#include "util.h"
-#include <stdio.h>
+
+#define var __auto_type
+
+/* Terminal color code */
+/* See: https://stackoverflow.com \
+ *      /questions/3585846/color-text-in-terminal-applications-in-unix
+ */
+#define T_RED "\x1B[31m"
+#define T_GRN "\x1B[32m"
+#define T_RST "\x1B[0m"
 
 void expect_true(Bool value) {
     if (value) {
@@ -57,4 +65,12 @@ void expect_not_equal(void* lhs,
     char buf[64];
     snprintf(buf, 64, "*%p is equal to *%p", lhs, rhs);
     fatal_error(buf);
+}
+
+void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {
+    printf("Test Case '-[%s Test %s()]' started.\n", ds, fn);
+    var result = test_function();
+    printf("Test Case '-[%s Test %s()]' ", ds, fn);
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
 }

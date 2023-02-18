@@ -24,4 +24,6 @@ void expect_not_equal(void* lhs,
                       void* rhs,
                       Bool (*equal)(void* lhs, void* rhs));
 
+void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void));
+
 #endif /* test_support_h */
