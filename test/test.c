@@ -10,6 +10,7 @@
 #include <time.h>
 
 #include "array.h"
+#include "binary_heap.h"
 #include "types.h"
 
 #define var __auto_type
@@ -23,6 +24,15 @@
 #define T_RST "\x1B[0m"
 
 /** Begin: Private helpers **/
+Int int_cmp(void* lhs, void* rhs) {
+    if (*(Int*)lhs > *(Int*)rhs) {
+        return 1;
+    } else if(*(Int*)lhs < *(Int*)rhs) {
+        return -1;
+    }
+    return 0;
+}
+
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {
     printf("Test Case '-[%s Test %s()]' started.\n", ds, fn);
     var result = test_function();
@@ -306,6 +316,46 @@ Bool test_array_swap_at() {
 }
 /** End: Reordering an Array’s Elements **/
 
+/** Begin: Creating & Destroying a heap **/
+Bool test_binary_heap_init(void) {
+    var heap = binary_heap_init(sizeof(Int), int_cmp);
+    binary_heap_deinit(heap);
+    return true;
+}
+/** End: Creaing & Destroying a heap **/
+
+/** Begin: Lookup **/
+Bool test_binary_heap_max(void) {
+    Int buf[] = {19358, 12333, 19348, 12321, 12361, 12333};
+    var heap = binary_heap_init(sizeof(Int), int_cmp);
+    for (var i = 0; i < 6; i += 1) {
+        binary_heap_insert(heap, &buf[i]);
+    }
+    if (*(Int*)binary_heap_max(heap) != buf[0]) {
+        return false;
+    }
+    return true;
+}
+/** End: Lookup **/
+
+/** Begin: Insertion & Removal **/
+Bool test_binary_heap_insert(void) {
+    Int buf[] = {19358, 12333, 19348, 12321, 12361, 12333};
+    Int sorted[] = {19358, 19348, 12361, 12333, 12333, 12321};
+    var heap = binary_heap_init(sizeof(Int), int_cmp);
+    for	(var i = 0; i < 6; i += 1) {
+        binary_heap_insert(heap, &buf[i]);
+    }
+    for (var i = 0; i < 6; i += 1) {
+        if (*(Int*)binary_heap_max(heap) != sorted[i]) {
+            return false;
+        }
+        binary_heap_removen(heap);
+    }
+    return true;
+}
+/** End: Insertion & Removal **/
+
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
@@ -328,6 +378,10 @@ Int32 main(void) {
     run_test("Array", "test_array_remove_first", test_array_remove_first);
     run_test("Array", "test_array_remove_last", test_array_remove_last);
     run_test("Array", "test_array_swap_at", test_array_swap_at);
+
+    run_test("Binary Heap", "test_binary_heap_init", test_binary_heap_init);
+    run_test("Binary Heap", "test_binary_heap_max", test_binary_heap_max);
+    run_test("Binary Heap", "test_binary_heap_insert", test_binary_heap_init);
 
     return 0;
 }
