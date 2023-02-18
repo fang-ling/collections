@@ -9,6 +9,7 @@
 #define test_support_h
 
 #include <stdio.h>
+#include <string.h>
 
 #include "util.h"
 #include "types.h"
@@ -23,6 +24,11 @@ void expect_equal(void *lhs, void *rhs, Bool (*equal)(void *lhs, void *rhs));
 void expect_not_equal(void* lhs,
                       void* rhs,
                       Bool (*equal)(void* lhs, void* rhs));
+void expect_equal_elements(void* lhs,
+                           void* rhs,
+                           Int count,
+                           Int element_size,
+                           Bool (*equal)(void* lhs, void* rhs));
 
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void));
 

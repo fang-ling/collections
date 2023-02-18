@@ -67,6 +67,27 @@ void expect_not_equal(void* lhs,
     fatal_error(buf);
 }
 
+void expect_equal_elements(void* lhs,
+                           void* rhs,
+                           Int count,
+                           Int element_size,
+                           Bool (*equal)(void* lhs, void* rhs)) {
+    if (memcmp(lhs, rhs, count * element_size) == 0) {
+        return;
+    }
+    char buf[64];
+    snprintf(buf, 64, "%p does not have equal elements to %p", lhs, rhs);
+    fatal_error(buf);
+    /*for (var i = 0; i < count; i += 1) {
+        if (!equal(lhs + i * element_size, rhs + i * element_size)) {
+            char buf[64];
+            snprintf(buf, 64, "%p does not have equal elements to %p",
+                     lhs, rhs);
+            fatal_error(buf);
+        }
+        }*/
+}
+
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {
     printf("Test Case '-[%s Test %s()]' started.\n", ds, fn);
     var result = test_function();
