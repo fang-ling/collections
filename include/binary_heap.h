@@ -17,7 +17,7 @@
 struct BinaryHeap {
     /* The number of elements in the heap. */
     Int count;
-    /* A Boolean value indicating whether or not the heap is empty. */
+    /* A Boolean value indicating whether the heap is empty. */
     Bool is_empty;
     struct Array* storage;
 
