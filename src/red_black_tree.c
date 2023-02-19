@@ -41,6 +41,37 @@ red_black_tree_node_init(void* key,
 
     return node;
 }
+/* Red Black Tree Rotation: Modify tree structure without breaking binary
+ * search tree property, i.e. x.left.key < x.key < x.right.key
+ */
+/*
+ *        |                               |
+ *       [y]       left_rotate(x)        [x]
+ *      /   \      <--------------      /   \
+ *    [x]    c                         a    [y]
+ *   /   \         -------------->         /   \
+ *  a     b        right_rotate(y)        b     c
+ */
+static void rotate(struct RedBlackTree* tree,
+                   struct RedBlackTreeNode* x,
+                   Int is_right) {
+    var y = x -> child[is_right ^ 1];
+    x -> child[is_right ^ 1] = y -> child[is_right];
+    if (y -> child[is_right] != tree -> nil) {
+        y -> child[is_right] -> p = x;
+    }
+    y -> p = x -> p;
+    if (x -> p == tree -> nil) {
+        tree -> root = y;
+    } else {
+        x -> p -> child[x == x -> p -> child[1] ? 1 : 0] = y;
+    }
+    y -> child[is_right] = x;
+    x -> p = y;
+    /* Maintain augmented data */
+    y -> size = x -> size;
+    x -> size = x -> child[0] -> size + x -> child[1] -> size + x -> count;
+}
 /** End: Private helpers **/
 
 /** Begin: Creating a tree **/
@@ -67,3 +98,7 @@ red_black_tree_init(Int element_size,
     return tree;
 }
 /** End: Creating a tree **/
+
+/** Begin: Destroying a tree **/
+// TO-DO
+/** End: Destroying a tree **/
