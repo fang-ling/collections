@@ -1,14 +1,15 @@
 //
-//  redblack_tree.h
+//  red_black_tree.h
 //  c-collections
 //
 //  Created by Fang Ling on 2023/2/19.
 //
 
-#ifndef redblack_tree_h
-#define redblack_tree_h
+#ifndef red_black_tree_h
+#define red_black_tree_h
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "types.h"
 
@@ -38,4 +39,4 @@ struct RedBlackTree {
     Int (*compare)(void* lhs, void* rhs);
 };
 
-#endif /* redblack_tree_h */
+#endif /* red_black_tree_h */
