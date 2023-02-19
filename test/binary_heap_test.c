@@ -304,6 +304,34 @@ static Bool test_max_struct(void) {
     return true;
 }
 
+static Bool test_remove_struct(void) {
+    var heap = binary_heap_init(sizeof(struct Task), cmp2);
+    /* expect_fatal_error */
+    //free(binary_heap_remove(heap));
+
+    struct Task beta;
+    beta.name = "Laura";
+    beta.priority = 1;
+    binary_heap_insert(heap, &beta);
+
+    struct Task alpha;
+    alpha.name = "Alice";
+    alpha.priority = 12333;
+    binary_heap_insert(heap, &alpha);
+
+    struct Task gamma;
+    gamma.name = "Sue";
+    gamma.priority = 19333;
+    binary_heap_insert(heap, &gamma);
+
+    expect_equal(&gamma, binary_heap_remove(heap), equal2);
+    expect_equal(&alpha, binary_heap_remove(heap), equal2);
+    expect_equal(&beta, binary_heap_remove(heap), equal2);
+
+    binary_heap_deinit(heap);
+    return true;
+}
+
 void binary_heap_test(void) {
     run_test("Binary Heap", "test_is_empty", test_is_empty);
     run_test("Binary Heap", "test_count", test_count);
@@ -312,4 +340,5 @@ void binary_heap_test(void) {
     run_test("Binary Heap", "test_max", test_max);
     run_test("Binary Heap", "test_remove", test_remove);
     run_test("Binary Heap", "test_max_struct", test_max_struct);
+    run_test("Binary Heap", "test_remove_struct", test_remove_struct);
 }
