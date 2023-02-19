@@ -62,8 +62,16 @@ struct Task {
 };
 
 static Int cmp2(void* lhs, void* rhs) {
-    return cmp(&(((struct Task*)rhs) -> priority),
-               &(((struct Task*)lhs) -> priority));
+    return cmp(&(((struct Task*)lhs) -> priority),
+               &(((struct Task*)rhs) -> priority));
+}
+
+static Bool equal2(void* lhs, void* rhs) {
+    if (cmp2(lhs, rhs) == 0) {
+        return strcmp(((struct Task*)lhs) -> name,
+                      ((struct Task*)rhs) -> name) == 0;
+    }
+    return cmp2(lhs, rhs) == 0;
 }
 
 static Bool test_is_empty(void) {
@@ -271,6 +279,31 @@ static Bool test_remove(void) {
     return true;
 }
 
+static Bool test_max_struct(void) {
+    var heap = binary_heap_init(sizeof(struct Task), cmp2);
+
+    struct Task alpha;
+    alpha.name = "Alice";
+    alpha.priority = 12333;
+    binary_heap_insert(heap, &alpha);
+    expect_equal(&alpha, binary_heap_max(heap), equal2);
+
+    struct Task beta;
+    beta.name = "Laura";
+    beta.priority = 1;
+    binary_heap_insert(heap, &beta);
+    expect_equal(&alpha, binary_heap_max(heap), equal2);
+
+    struct Task gamma;
+    gamma.name = "Sue";
+    gamma.priority = 19333;
+    binary_heap_insert(heap, &gamma);
+    expect_equal(&gamma, binary_heap_max(heap), equal2);
+
+    binary_heap_deinit(heap);
+    return true;
+}
+
 void binary_heap_test(void) {
     run_test("Binary Heap", "test_is_empty", test_is_empty);
     run_test("Binary Heap", "test_count", test_count);
@@ -278,4 +311,5 @@ void binary_heap_test(void) {
     run_test("Binary Heap", "test_insert_random", test_insert_random);
     run_test("Binary Heap", "test_max", test_max);
     run_test("Binary Heap", "test_remove", test_remove);
+    run_test("Binary Heap", "test_max_struct", test_max_struct);
 }
