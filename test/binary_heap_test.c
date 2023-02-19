@@ -148,9 +148,134 @@ static Bool test_insert_random(void) {
     return true;
 }
 
+static Bool test_max(void) {
+    var heap = binary_heap_init(sizeof(Int), cmp);
+    expect_null(binary_heap_max(heap));
+
+    var delta = 12333ll;
+    binary_heap_insert(heap, &delta);
+    expect_equal(&delta, binary_heap_max(heap), equal);
+
+    delta = 12321ll;
+    binary_heap_insert(heap, &delta);
+    delta = 12333ll;
+    expect_equal(&delta, binary_heap_max(heap), equal);
+
+    delta = 19348ll;
+    binary_heap_insert(heap, &delta);
+    expect_equal(&delta, binary_heap_max(heap), equal);
+
+    delta = 19358ll;
+    binary_heap_insert(heap, &delta);
+    expect_equal(&delta, binary_heap_max(heap), equal);
+
+    binary_heap_deinit(heap);
+    return true;
+}
+
+static Bool test_remove(void) {
+    var heap = binary_heap_init(sizeof(Int), cmp);
+    /* expect_fatal_error */
+    //free(binary_heap_remove(heap));
+
+    var delta = 19358ll;
+    binary_heap_insert(heap, &delta);
+    var buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+
+    delta = 12ll;
+    binary_heap_insert(heap, &delta);
+    delta = 9ll;
+    binary_heap_insert(heap, &delta);
+    buf = binary_heap_remove(heap);
+    delta = 12ll;
+    expect_equal(buf, &delta, equal);
+
+    delta = 13ll;
+    binary_heap_insert(heap, &delta);
+    delta = 1ll;
+    binary_heap_insert(heap, &delta);
+    delta = 4ll;
+    binary_heap_insert(heap, &delta);
+    delta = 13ll;
+    buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+
+    Int input[20];
+    for (var i = 0; i < 20; i += 1) {
+        input[i] = i + 1;
+    }
+    shuffle(input, 20);
+    for (var i = 0; i < 20; i += 1) {
+        binary_heap_insert(heap, &input[i]);
+    }
+
+    delta = 20ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 19ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 18ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 17ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 16ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 15ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 14ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 13ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 12ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 11ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 10ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 9ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    /* One 9 was still in the heap from before */
+    delta = 9ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 8ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 7ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 6ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 5ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 4ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    /* One 4 was still in the heap from before */
+    delta = 4ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 3ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 2ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    delta = 1ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+    /* One 1 was still in the heap from before */
+    delta = 1ll; buf = binary_heap_remove(heap);
+    expect_equal(buf, &delta, equal);
+
+    /* expect_fatal_error */
+    //free(binary_heap_remove(heap));
+
+    delta = 0ll;
+    expect_equal(&delta, &heap -> count, equal);
+    expect_true(heap -> is_empty);
+
+    binary_heap_deinit(heap);
+    return true;
+}
+
 void binary_heap_test(void) {
     run_test("Binary Heap", "test_is_empty", test_is_empty);
     run_test("Binary Heap", "test_count", test_count);
     run_test("Binary Heap", "test_insert", test_insert);
     run_test("Binary Heap", "test_insert_random", test_insert_random);
+    run_test("Binary Heap", "test_max", test_max);
+    run_test("Binary Heap", "test_remove", test_remove);
 }
