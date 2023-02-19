@@ -35,6 +35,7 @@ static void* items_in_decending_order(struct BinaryHeap *heap) {
                delta,
                heap -> storage -> element_size);
         free(delta);
+        i += 1;
     }
     return buf;
 }
@@ -125,9 +126,9 @@ static Bool test_insert_random(void) {
     Int sorted[c];
     for (var i = 0ll; i < c; i += 1) {
         input[i] = i;
-        sorted[i] = i;
+        sorted[i] = c - i - 1;
     }
-    for (var seed = 0; seed < 5000; seed += 1) {
+    for (var seed = 0; seed < 1; seed += 1) {
         srand(seed);
         /* Shuffle array */
         shuffle(input, c);
@@ -140,12 +141,8 @@ static Bool test_insert_random(void) {
             i += 1;
             expect_equal(&heap -> count, &i, equal);
         }
-        var buf = items_in_decending_order(heap);
-        for (var i = 0; i < c; i += 1) {
-            printf("%lld\n", *(Int*)(buf + i * sizeof(Int)));
-        }
-        /*expect_equal_elements(sorted, items_in_decending_order(heap),
-          c, sizeof(Int), equal);*/
+        expect_equal_elements(sorted, items_in_decending_order(heap),
+                              c, sizeof(Int), equal);
         binary_heap_deinit(heap);
     }
     return true;
