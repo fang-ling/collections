@@ -72,6 +72,102 @@ static void rotate(struct RedBlackTree* tree,
     y -> size = x -> size;
     x -> size = x -> child[0] -> size + x -> child[1] -> size + x -> count;
 }
+
+/* Maintain the red black tree property violated by insert. */
+/* Notes from CLRS 3e:
+ * Case 1: z's uncle y is red, {[A]: red node, (A): black node}
+ *
+ *           |                                   |
+ *          (C)                                 [z] <--~ {new z}
+ *         /   \                               /   \
+ *        /     \                             /     \
+ *       /       \                           / _old z\
+ *      /         \                         / /       \
+ *    [A]         [y]    ------------>    (A) |       (y)
+ *   /   \       /   \                   /   \|      /   \
+ *  a    [z]    d     e                 a    [z]    d     e
+ *      /   \                               /   \
+ *     b     c                             b     c
+ *
+ * Because z.p.p (in here: C) is black, we can color both z.p (A) and y black,
+ * thereby fixing the problem of z and z.p (A) both being red, and we can color
+ * z.p.p (C) red, thereby maintaining property 5. We then repeat the while loop
+ * with z.p.p (C) as the new node z. The pointer z moves up two levels in the
+ * tree.
+ *
+ * Case 2: z's uncle y is black, and z is a right child.
+ * Case 3: z's uncle y is black, and z is a left child.
+ *
+ *           |                                  |
+ *          (C)                                (C)
+ *         /   \                              /   \
+ *        /     \       left-rotate(A)       /     \
+ *       /       \      ------------->      /       \
+ *      /         \                        /         \
+ *    [A]          d y                   [B]          d y
+ *   /   \                              /   \
+ *  a    [B]z                         [A]z   c
+ *      /   \                        /   \
+ *     b     c                      a     b
+ *              Case 2                        Case 3
+ *
+ *                                              |
+ *                              right-rotate(C) |
+ *                                              |
+ *                                              V
+ *
+ *                                              |
+ *                                             (C)
+ *                                            /   \
+ *                                           /     \
+ *                                          /       \
+ *                                         /         \
+ *                                       [A]         [B]
+ *                                      /   \       /   \
+ *                                     a     b     c     d
+ *
+ * In case 2 and 3, the color of z's uncle y is black. We distinguish the two
+ * cases according to whether z is a right or left child of z.p. In case 2,
+ * node z is a right child of its parent. We immediately use a left rotation
+ * to transform the situation into case 3, in which node z is a left child.
+ * Because both z and z.p are red, the rotation affects neither the black-
+ * height of nodes nor property 5. Whether we enter case 3 directly or through
+ * case 2, z's uncle y is black, since otherwise we would have executed case 1.
+ * Additionally, the node z.p.p exists. In case 3, we execute some color
+ * changes and a right rotation, which preserve property 5, and then, since we
+ * no longer have two red nodes in a row, we are done. The while loop does not
+ * iterate another time, since z.p is now black.
+ */
+static void insert_fixup(struct RedBlackTree* tree,
+                         struct RedBlackTreeNode* node) {
+    struct RedBlackTreeNode* p;
+    struct RedBlackTreeNode* gp;
+    struct RedBlackTreeNode* y;
+    var z = node;
+    Int is_left;
+    while (z -> p -> color == RBT_RED) {
+        p = z -> p;
+        gp = p -> p;
+        is_left = p == gp -> child[0] ? 1 : 0;
+        y = gp -> child[is_left];
+        if (y -> color == RBT_RED) { /* Case 1 */
+            y -> color = RBT_BLACK;
+            p -> color = RBT_BLACK;
+            gp -> color = RBT_RED;
+            z = gp;
+        } else {
+            if (z == p -> child[is_left]) { /* Case 2 */
+                z = p;
+                rotate(tree, z, is_left ^ 1);
+            }
+            /* Case 3 */
+            z -> p -> color = RBT_BLACK;
+            z -> p -> p -> color = RBT_RED;
+            rotate(tree, gp, is_left);
+        }
+    }
+    tree -> root -> color = RBT_BLACK;
+}
 /** End: Private helpers **/
 
 /** Begin: Creating a tree **/
