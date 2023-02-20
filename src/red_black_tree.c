@@ -176,6 +176,7 @@ struct RedBlackTree *
 red_black_tree_init(Int element_size,
                     Int (*compare)(void* lhs, void* rhs)) {
     var tree = (struct RedBlackTree*)malloc(sizeof(struct RedBlackTree));
+    tree -> element_size = element_size;
     tree -> count = 0;
     tree -> is_empty = true;
     tree -> compare = compare;
@@ -198,3 +199,42 @@ red_black_tree_init(Int element_size,
 /** Begin: Destroying a tree **/
 // TO-DO
 /** End: Destroying a tree **/
+
+/** Begin: Insertion **/
+/* Insert a new item into the tree */
+void red_black_tree_insert(struct RedBlackTree* tree,
+                           void* key,
+                           Bool allow_duplicate_key) {
+    /* This works by creating a new red node with the key to where it belongs
+     * in the tree, using binary search and then fix red black tree property
+     * by calling insert_fixup().
+     */
+    var x = tree -> root;
+    var y = tree -> nil;
+    var z = red_black_tree_node_init(key,                  /* key */
+                                     tree -> element_size, /* e_size */
+                                     1,                    /* size */
+                                     1,                    /* count */
+                                     tree -> nil,          /* left */
+                                     tree -> nil,          /* right */
+                                     tree -> nil,          /* p */
+                                     RBT_RED);             /* color */
+    while (x != tree -> nil) { /* Find the position to insert */
+        y = x;
+        y -> size += 1;
+        /* If exists, add `count` by 1. */
+        if (tree -> compare(x -> key, key) == 0) {
+            x -> count += 1;
+            return;
+        }
+        x = x -> child[(tree -> compare(x -> key, key) < 0) ? 1 : 0];
+    }
+    z -> p = y;
+    if (y == tree -> nil) {
+        tree -> root = z;
+    } else {
+        y -> child[(tree -> compare(y -> key, key) < 0) ? 1 : 0] = z;
+    }
+    insert_fixup(tree, z);
+}
+/** End: Insertion **/

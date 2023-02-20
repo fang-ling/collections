@@ -31,6 +31,7 @@ struct RedBlackTree {
     struct RedBlackTreeNode* root;
     struct RedBlackTreeNode* nil;
 
+    Int element_size;
     /* The number of elements in the tree */
     Int count;
     /* A Boolean value indicating whether the tree is empty. */
