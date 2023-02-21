@@ -168,6 +168,155 @@ static void insert_fixup(struct RedBlackTree* tree,
     }
     tree -> root -> color = RBT_BLACK;
 }
+
+/* Replaces one subtree as a child of its parent with another subtree.
+ * When transplant(tree, u, v) replaces the subtree rooted at node u with the
+ * subtree rooted at node v, node u's parent becomes node v's parent, and u's
+ * parent ends up having v as its appropriate child.
+ */
+static void transplant(struct RedBlackTree* tree,
+                       struct RedBlackTreeNode* u,
+                       struct RedBlackTreeNode* v) {
+    if (u -> p == tree -> nil){
+        tree -> root = v;
+    } else {
+        u -> p -> child[(u == u -> p -> child[0]) ? 0 : 1] = v;
+    }
+    v -> p = u -> p;
+}
+
+/* (Internal use)
+ * Returns a node in the search tree whose key is a minimum.
+ */
+static struct RedBlackTreeNode* minimum(struct RedBlackTree* tree,
+                                        struct RedBlackTreeNode* x) {
+    while (x -> child[0] != tree -> nil) {
+        x = x -> child[0];
+    }
+    return x;
+}
+
+/* Maintain the red black tree property violated by remove. */
+/* Notes from CLRS 3e:
+ * Case 1: x's sibling w is red, {[A]: red node, (A): black node}
+ *
+ *           |                                   |
+ *          (B)                                 (D)
+ *         /   \                               /   \
+ *        /     \                             /     \
+ *       /       \                           /       \
+ *      /         \ w                       /         \
+ *  x (A)         [D]    ------------>    [B]         (E)
+ *   /   \       /   \                   /   \new w  /   \
+ *  a     b    (C)   (E)             x (A)   (C)    e     f
+ *             / \   / \               / \   / \
+ *            c   d e   f             a   b c   d
+ *
+ * Since w must have black children, we can switch the colors of w and x.p and
+ * then perform a left-rotation on x.p without violating any of the red-black
+ * properties. The new sibling of x, which is one of w's children prior to the
+ * rotation, is now black, and thus we have converted case 1 into case 2, 3, or
+ * 4.
+ *
+ * Case 2: x's sibling w is black, and both of w's children are black
+ *
+ *           |                                   | new x
+ *         [(B)]                              c[(B)]
+ *         /   \                               /   \
+ *        /     \                             /     \
+ *       /       \                           /       \
+ *      /         \ w                       /         \
+ *  x (A)         (D)    ------------>    (A)         [D]
+ *   /   \       /   \                   /   \       /   \
+ *  a     b    (C)   (E)                a     b    (C)   (E)
+ *             / \   / \                           / \   / \
+ *            c   d e   f                         c   d e   f
+ *
+ * Since w is also black, we take one black off both x and w, leaving x with
+ * only one black and leaving w red. To compensate for removing one black from
+ * x and w, we would like to add an extra black to x.p, which originally either
+ * red or black. We do so by repeating the while loop with x.p as the new node
+ * x.
+ *
+ * Case 3: x's sibling w is black, w's left child is red, and w's right child
+ * is black
+ *
+ *           |                                   |
+ *       c [(B)]                              c[(B)]
+ *         /   \                               /   \
+ *        /     \                             /     \
+ *       /       \                           /       \
+ *      /         \ w                       /         \ new w
+ *  x (A)         (D)    ------------>  x (A)         (C)
+ *   /   \       /   \                   /   \       /   \
+ *  a     b    [C]   (E)                a     b     c    [D]
+ *             / \   / \                                 / \
+ *            c   d e   f                               d  (E)
+ *                                                         / \
+ *                                                        e   f
+ *
+ * We can switch the colors of w and its left child w.left and then perform a
+ * right rotation on w without violating any of the red-black properties. The
+ * new sibling w of x is now a black node with a red right child, and thus we
+ * have transformed case 3 into case 4.
+ *
+ * Case 4: x's sibling w is black, and w's right child is red
+ *
+ *           |                                   |
+ *       c [(B)]                              c[(D)]
+ *         /   \                               /   \
+ *        /     \                             /     \
+ *       /       \                           /       \
+ *      /         \ w                       /         \
+ *  x (A)         (D)    ------------>    (B)         (E)
+ *   /   \    c' /   \                   /   \  c'   /   \
+ *  a     b   [(C)]  [E]               (A)  [(C)]    e     f
+ *             / \   / \               / \   / \
+ *            c   d e   f             a   b c   d    new x = T.root
+ *
+ * By making some color changes and performing a left rotation on x.p, we can
+ * remove the extra black on x, making it singly black, without violating any
+ * of the red-black properties. Setting x to be the root causes the while loop
+ * to terminate when it tests the loop condition.
+ */
+static void delete_fixup(struct RedBlackTree* tree,
+                         struct RedBlackTreeNode* node) {
+    var x = node;
+    struct RedBlackTreeNode* p;
+    struct RedBlackTreeNode* w;
+    Int is_left = 0;
+    while (x != tree -> root && x -> color == RBT_BLACK) {
+        p = x -> p;
+        is_left = x == x -> p -> child[0] ? 1 : 0;
+        w = p -> child[is_left];
+        if (w -> color == RBT_RED) { /* Case 1 */
+            p -> color = RBT_RED;
+            w -> color = RBT_BLACK;
+            rotate(tree, p, is_left ^ 1);
+            w = p -> child[is_left];
+        }
+        if (w -> child[0] -> color == RBT_BLACK &&
+            w -> child[1] -> color == RBT_BLACK) { /* Case 2 */
+            w -> color = RBT_RED;
+            x = x -> p;
+        } else {
+            if (w -> child[is_left] -> color == RBT_BLACK) { /* Case 3 */
+                w -> color = RBT_RED;
+                w -> child[is_left ^ 1] -> color = RBT_BLACK;
+                rotate(tree, w, is_left);
+                w = p -> child[is_left];
+            }
+            /* Case 4 */
+            w -> color = p -> color;
+            p -> color = RBT_BLACK;
+            w -> child[is_left] -> color = RBT_BLACK;
+            rotate(tree, w -> p, is_left ^ 1);
+            x = tree -> root;
+        }
+    }
+    x -> color = RBT_BLACK;
+}
+
 /** End: Private helpers **/
 
 /** Begin: Creating a tree **/
@@ -238,3 +387,9 @@ void red_black_tree_insert(struct RedBlackTree* tree,
     insert_fixup(tree, z);
 }
 /** End: Insertion **/
+
+/** Begin: Removal **/
+/** End: Removal **/
+
+/** Begin: Lookup **/
+/** End: Lookup **/
