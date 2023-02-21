@@ -391,11 +391,17 @@ void red_black_tree_insert(struct RedBlackTree* tree,
         y -> child[(tree -> compare(y -> key, key) < 0) ? 1 : 0] = z;
     }
     insert_fixup(tree, z);
+    /* Update tree size */
+    tree -> count += 1;
+    tree -> is_empty = false;
 }
 /** End: Insertion **/
 
 /** Begin: Removal **/
-void red_black_tree_remove(struct RedBlackTree* tree, void* key) {
+Bool red_black_tree_remove(struct RedBlackTree* tree, void* key) {
+    if (tree -> is_empty) {
+        fatal_error("Can't remove from an empty red black tree");
+    }
     var z = tree -> root;
     var w = tree -> nil;
     struct RedBlackTreeNode* y;
@@ -413,7 +419,7 @@ void red_black_tree_remove(struct RedBlackTree* tree, void* key) {
     if (z != tree -> nil) {
         if (z -> count > 1) {
             z -> count -= 1;
-            return;
+            return true;
         }
         y = z;
         old_color = y -> color;
@@ -452,11 +458,15 @@ void red_black_tree_remove(struct RedBlackTree* tree, void* key) {
             delete_fixup(tree, x);
         }
         node_deinit(z);
+        tree -> count -= 1;
+        tree -> is_empty = tree -> count == 0 ? true : false;
+        return true;
     } else { /* No such keys, restore subtree sizes */
         while (w != tree -> nil) {
             w -> size += 1;
             w = w -> p;
         }
+        return false;
     }
 }
 /** End: Removal **/

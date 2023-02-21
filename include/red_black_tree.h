@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "types.h"
+#include "util.h"
 
 enum RedBlackTreeColor {
     RBT_RED,
