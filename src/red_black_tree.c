@@ -6,6 +6,8 @@
 //
 
 #include "red_black_tree.h"
+#include <stdlib.h>
+#include <string.h>
 
 #define var __auto_type
 
@@ -198,6 +200,17 @@ static struct RedBlackTreeNode* minimum(struct RedBlackTree* tree,
                                         struct RedBlackTreeNode* x) {
     while (x -> child[0] != tree -> nil) {
         x = x -> child[0];
+    }
+    return x;
+}
+
+/* (Internal use)
+ * Returns a node in the search tree whose ket is a maximum.
+ */
+static struct RedBlackTreeNode* maximum(struct RedBlackTree* tree,
+                                        struct RedBlackTreeNode* x) {
+    while (x -> child[1] != tree -> nil) {
+        x = x -> child[1];
     }
     return x;
 }
@@ -472,4 +485,19 @@ Bool red_black_tree_remove(struct RedBlackTree* tree, void* key) {
 /** End: Removal **/
 
 /** Begin: Lookup **/
+/* Returns the smallest element in a search tree in O(lg n) time. */
+void* red_black_tree_min(struct RedBlackTree* tree) {
+    if (tree -> is_empty) {
+        return NULL;
+    }
+    return minimum(tree, tree -> root);
+}
+
+/* Returns the largest element in a search tree in O(lg n) time. */
+void* red_black_tree_max(struct RedBlackTree* tree) {
+    if (tree -> is_empty) {
+        return NULL;
+    }
+    return maximum(tree, tree -> root);
+}
 /** End: Lookup **/
