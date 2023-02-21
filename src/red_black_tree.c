@@ -10,16 +10,15 @@
 #define var __auto_type
 
 /** Begin: Private helpers **/
-/* Create a new red black tree node */
-static struct RedBlackTreeNode*
-red_black_tree_node_init(void* key,
-                         Int element_size,
-                         Int size,
-                         Int count,
-                         struct RedBlackTreeNode* left,
-                         struct RedBlackTreeNode* right,
-                         struct RedBlackTreeNode* p,
-                         enum RedBlackTreeColor color) {
+/* Creates a new red black tree node */
+static struct RedBlackTreeNode* node_init(void* key,
+                                          Int element_size,
+                                          Int size,
+                                          Int count,
+                                          struct RedBlackTreeNode* left,
+                                          struct RedBlackTreeNode* right,
+                                          struct RedBlackTreeNode* p,
+                                          enum RedBlackTreeColor color) {
     var node =
         (struct RedBlackTreeNode*)malloc(sizeof(struct RedBlackTreeNode));
 
@@ -41,6 +40,13 @@ red_black_tree_node_init(void* key,
 
     return node;
 }
+
+/* Destroys a red black tree node */
+static void node_deinit(struct RedBlackTreeNode* node) {
+    free(node -> key);
+    free(node);
+}
+
 /* Red Black Tree Rotation: Modify tree structure without breaking binary
  * search tree property, i.e. x.left.key < x.key < x.right.key
  */
@@ -330,14 +336,14 @@ red_black_tree_init(Int element_size,
     tree -> is_empty = true;
     tree -> compare = compare;
 
-    tree -> nil = red_black_tree_node_init(NULL,         /* key */
-                                           element_size, /* e_size */
-                                           0,            /* size */
-                                           0,            /* count */
-                                           NULL,         /* left */
-                                           NULL,         /* right */
-                                           NULL,         /* p */
-                                           RBT_BLACK);   /* color */
+    tree -> nil = node_init(NULL,         /* key */
+                            element_size, /* e_size */
+                            0,            /* size */
+                            0,            /* count */
+                            NULL,         /* left */
+                            NULL,         /* right */
+                            NULL,         /* p */
+                            RBT_BLACK);   /* color */
     tree -> root = tree -> nil;
     tree -> root -> p = tree -> nil;
 
@@ -360,14 +366,14 @@ void red_black_tree_insert(struct RedBlackTree* tree,
      */
     var x = tree -> root;
     var y = tree -> nil;
-    var z = red_black_tree_node_init(key,                  /* key */
-                                     tree -> element_size, /* e_size */
-                                     1,                    /* size */
-                                     1,                    /* count */
-                                     tree -> nil,          /* left */
-                                     tree -> nil,          /* right */
-                                     tree -> nil,          /* p */
-                                     RBT_RED);             /* color */
+    var z = node_init(key,                  /* key */
+                      tree -> element_size, /* e_size */
+                      1,                    /* size */
+                      1,                    /* count */
+                      tree -> nil,          /* left */
+                      tree -> nil,          /* right */
+                      tree -> nil,          /* p */
+                      RBT_RED);             /* color */
     while (x != tree -> nil) { /* Find the position to insert */
         y = x;
         y -> size += 1;
@@ -389,6 +395,70 @@ void red_black_tree_insert(struct RedBlackTree* tree,
 /** End: Insertion **/
 
 /** Begin: Removal **/
+void red_black_tree_remove(struct RedBlackTree* tree, void* key) {
+    var z = tree -> root;
+    var w = tree -> nil;
+    struct RedBlackTreeNode* y;
+    struct RedBlackTreeNode* x;
+    struct RedBlackTreeNode* delta;
+    enum RedBlackTreeColor old_color;
+    while (z != tree -> nil) { /* Find a node z with the specific key. */
+        w = z;
+        w -> size -= 1;
+        if (tree -> compare(key, z -> key) == 0) {
+            break;
+        }
+        z = z -> child[tree -> compare(z -> key, key) < 0 ? 1 : 0];
+    }
+    if (z != tree -> nil) {
+        if (z -> count > 1) {
+            z -> count -= 1;
+            return;
+        }
+        y = z;
+        old_color = y -> color;
+        if (z -> child[0] == tree -> nil) {
+            x = z -> child[1];
+            transplant(tree, z, z -> child[1]);
+        } else if (z -> child[1] == tree -> nil) {
+            x = z -> child[0];
+            transplant(tree, z, z -> child[0]);
+        } else {
+            y = minimum(tree, z -> child[1]);
+            old_color = y -> color;
+            x = y -> child[1];
+            if (y -> p == z) {
+                x -> p = y;
+            } else {
+                delta = y;
+                while (delta != z) {
+                    delta -> size -= y -> count;
+                    delta = delta -> p;
+                }
+                transplant(tree, y, y -> child[1]);
+                y -> child[1] = z -> child[1];
+                y -> child[1] -> p = y;
+            }
+            transplant(tree, z, y);
+            y -> child[0] = z -> child[0];
+            y -> child[0] -> p = y;
+            y -> color = z -> color;
+            y -> size =
+                y -> child[0] -> size +
+                y -> child[1] -> size +
+                y -> count;
+        }
+        if (old_color == RBT_BLACK) {
+            delete_fixup(tree, x);
+        }
+        node_deinit(z);
+    } else { /* No such keys, restore subtree sizes */
+        while (w != tree -> nil) {
+            w -> size += 1;
+            w = w -> p;
+        }
+    }
+}
 /** End: Removal **/
 
 /** Begin: Lookup **/
