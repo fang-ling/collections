@@ -500,4 +500,52 @@ void* red_black_tree_max(struct RedBlackTree* tree) {
     }
     return maximum(tree, tree -> root);
 }
+
+/* Returns the smallest key greater than the given key. */
+void* red_black_tree_successor(struct RedBlackTree* tree, void* key) {
+    var x = tree -> root;
+    while (x != tree -> nil) { /* Find the node with key */
+        if (tree -> compare(x -> key, key) == 0) {
+            break;
+        }
+        x = x -> child[(tree -> compare(x -> key, key) < 0) ? 1 : 0];
+    }
+
+    if (x -> child[1] != tree -> nil) {
+        return minimum(tree, x -> child[1]);
+    }
+    var y = x -> p;
+    while (y != tree -> nil && x == y -> child[1]) {
+        x = y;
+        y = y -> p;
+    }
+    /* This will return NULL when y == nil which cause by x has the largest key
+     * in the tree.
+     */
+    return y -> key;
+}
+
+/* Returns the largest key smaller than the given key. */
+void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
+    var x = tree -> root;
+    while (x != tree -> nil) { /* Find the node with key */
+        if (tree -> compare(x -> key, key) == 0) {
+            break;
+        }
+        x = x -> child[(tree -> compare(x -> key, key) < 0) ? 1 : 0];
+    }
+
+    if (x -> child[0] != tree -> nil) {
+        return maximum(tree, x -> child[0]);
+    }
+    var y = x -> p;
+    while (y != tree -> nil && x == y -> child[0]) {
+        x = y;
+        y = y -> p;
+    }
+    /* This will return NULL when y == nil which cause by x has the largest key
+     * in the tree.
+     */
+    return y -> key;
+}
 /** End: Lookup **/
