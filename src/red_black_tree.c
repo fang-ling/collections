@@ -548,4 +548,41 @@ void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
      */
     return y -> key;
 }
+
+/* Returns the position of x with key in the linear order determined by an
+ * inorder tree walk of tree.
+ */
+Int red_black_tree_rank(struct RedBlackTree* tree, void* key) {
+    var x = tree -> root;
+    var rank = (Int) 0;
+
+    while (x != tree -> nil) {
+        if (tree -> compare(x -> key, key) < 0) {
+            rank += x -> child[0] -> size + x -> count;
+            x = x -> child[1];
+        } else {
+            x = x -> child[0];
+        }
+    }
+    return rank;
+}
+
+/* Returns the i-th smallest key in a tree */
+void* red_black_tree_select(struct RedBlackTree* tree, Int i) {
+    var x = tree -> root;
+    while (x != tree -> nil) {
+        if (x -> child[0] -> size + 1 <= i &&
+            x -> child[0] -> size + x -> count >= i) {
+            return x -> key;
+        } else {
+            if (x -> child[0] -> size + x -> count < i) {
+                i -= x -> child[0] -> size + x -> count;
+                x = x -> child[1];
+            } else {
+                x = x -> child[0];
+            }
+        }
+    }
+    return NULL;
+}
 /** End: Lookup **/
