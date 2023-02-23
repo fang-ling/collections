@@ -9,21 +9,6 @@
 
 #define var __auto_type
 
-/* See: https://stackoverflow.com/questions/6127503/shuffle-array-in-c */
-static void shuffle(Int* array, Int count) {
-    if (count > 1) {
-        var delta = 0ll;
-        var j = 0;
-        count -= 1;
-        for (var i = 0; i < count; i += 1) {
-            j = i + rand() / (RAND_MAX / (count + 1 - i) + 1);
-            delta = array[i];
-            array[i] = array[j];
-            array[j] = delta;
-        }
-    }
-}
-
 /* This will clean out the heap */
 static void* items_in_decending_order(struct BinaryHeap *heap) {
     var buf = malloc(heap -> storage -> element_size * heap -> count);
@@ -139,7 +124,7 @@ static Bool test_insert_random(void) {
     for (var seed = 0; seed < 1; seed += 1) {
         srand(seed);
         /* Shuffle array */
-        shuffle(input, c);
+        c_array_shuffle(input, c);
         /* Insert */
         var heap = binary_heap_init(sizeof(Int), cmp);
         var i = 0ll;
@@ -213,7 +198,7 @@ static Bool test_remove(void) {
     for (var i = 0; i < 20; i += 1) {
         input[i] = i + 1;
     }
-    shuffle(input, 20);
+    c_array_shuffle(input, 20);
     for (var i = 0; i < 20; i += 1) {
         binary_heap_insert(heap, &input[i]);
     }

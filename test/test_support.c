@@ -95,3 +95,18 @@ void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {
     printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
     printf(".\n");
 }
+
+/* See: https://stackoverflow.com/questions/6127503/shuffle-array-in-c */
+void c_array_shuffle(Int* array, Int count) {
+    if (count > 1) {
+        var delta = 0ll;
+        var j = 0;
+        count -= 1;
+        for (var i = 0; i < count; i += 1) {
+            j = i + rand() / (RAND_MAX / (count + 1 - i) + 1);
+            delta = array[i];
+            array[i] = array[j];
+            array[j] = delta;
+        }
+    }
+}

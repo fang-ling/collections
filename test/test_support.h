@@ -32,4 +32,6 @@ void expect_equal_elements(void* lhs,
 
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void));
 
+void c_array_shuffle(Int* array, Int count);
+
 #endif /* test_support_h */
