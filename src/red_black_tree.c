@@ -336,11 +336,19 @@ static void delete_fixup(struct RedBlackTree* tree,
     x -> color = RBT_BLACK;
 }
 
+static void tree_deinit(struct RedBlackTree* tree,
+                        struct RedBlackTreeNode* node) {
+    if (node != tree -> nil) {
+        tree_deinit(tree, node -> child[0]);
+        tree_deinit(tree, node -> child[1]);
+        node_deinit(node);
+    }
+}
 /** End: Private helpers **/
 
 /** Begin: Creating a tree **/
 /* Creates a new, empty tree. */
-struct RedBlackTree *
+struct RedBlackTree*
 red_black_tree_init(Int element_size,
                     Int (*compare)(void* lhs, void* rhs)) {
     var tree = (struct RedBlackTree*)malloc(sizeof(struct RedBlackTree));
@@ -365,7 +373,11 @@ red_black_tree_init(Int element_size,
 /** End: Creating a tree **/
 
 /** Begin: Destroying a tree **/
-// TO-DO
+void red_black_tree_deinit(struct RedBlackTree* tree) {
+    tree_deinit(tree, tree -> root);
+    node_deinit(tree -> nil);
+    free(tree);
+}
 /** End: Destroying a tree **/
 
 /** Begin: Insertion **/
