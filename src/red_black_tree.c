@@ -597,4 +597,18 @@ void* red_black_tree_select(struct RedBlackTree* tree, Int i) {
     }
     return NULL;
 }
+
+/* Returns a Boolean value indicating whether the tree contains the given
+ * element.
+ */
+Bool red_black_tree_contains(struct RedBlackTree* tree, void* key) {
+    var x = tree -> root;
+    while (x != tree -> nil) { /* Find the node with key */
+        if (tree -> compare(x -> key, key) == 0) {
+            return true;
+        }
+        x = x -> child[(tree -> compare(x -> key, key) < 0) ? 1 : 0];
+    }
+    return false;
+}
 /** End: Lookup **/
