@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "binary_heap_test.h"
+#include "red_black_tree_test.h"
 
 #define var __auto_type
 
@@ -300,12 +301,14 @@ Bool test_array_remove_last() {
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
-    strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
 
+    strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
     printf("Test Suite 'Binary Heap Test' started at %s\n", time_buf);
     binary_heap_test();
 
-    /*printf("Test Suite 'Array Test' started at %s\n", time_buf);*/
+    strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
+    printf("Test Suite 'Red Black Tree Test' started at %s\n", time_buf);
+    red_black_tree_test();
 
     /*run_test("Array", "test_array_init", test_array_init);
     run_test("Array", "test_array_init2", test_array_init2);
