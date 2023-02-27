@@ -37,6 +37,8 @@ struct RedBlackTree {
     Int count;
     /* A Boolean value indicating whether the tree is empty. */
     Bool is_empty;
+    /* A Boolean value indicating whether the tree allows duplicate keys. */
+    Bool is_allowed_duplicate;
     /* Compare function, like Java */
     Int (*compare)(void* lhs, void* rhs);
 };
@@ -45,6 +47,7 @@ struct RedBlackTree {
 /* Creates a new, empty tree. */
 struct RedBlackTree*
 red_black_tree_init(Int element_size,
+                    Bool is_allowed_duplicate,
                     Int (*compare)(void* lhs, void* rhs));
 /** End: Creating a tree **/
 
@@ -54,9 +57,7 @@ void red_black_tree_deinit(struct RedBlackTree* tree);
 
 /** Begin: Insertion **/
 /* Insert a new item into the tree */
-void red_black_tree_insert(struct RedBlackTree* tree,
-                           void* key,
-                           Bool allow_duplicate_key);
+void red_black_tree_insert(struct RedBlackTree* tree, void* key);
 /** End: Insertion **/
 
 /** Begin: Removal **/

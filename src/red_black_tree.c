@@ -352,11 +352,13 @@ static void tree_deinit(struct RedBlackTree* tree,
 /* Creates a new, empty tree. */
 struct RedBlackTree*
 red_black_tree_init(Int element_size,
+                    Bool is_allowed_duplicate,
                     Int (*compare)(void* lhs, void* rhs)) {
     var tree = (struct RedBlackTree*)malloc(sizeof(struct RedBlackTree));
     tree -> element_size = element_size;
     tree -> count = 0;
     tree -> is_empty = true;
+    tree -> is_allowed_duplicate = is_allowed_duplicate;
     tree -> compare = compare;
 
     tree -> nil = node_init(NULL,         /* key */
@@ -384,9 +386,7 @@ void red_black_tree_deinit(struct RedBlackTree* tree) {
 
 /** Begin: Insertion **/
 /* Insert a new item into the tree */
-void red_black_tree_insert(struct RedBlackTree* tree,
-                           void* key,
-                           Bool allow_duplicate_key) {
+void red_black_tree_insert(struct RedBlackTree* tree, void* key) {
     /* This works by creating a new red node with the key to where it belongs
      * in the tree, using binary search and then fix red black tree property
      * by calling insert_fixup().
@@ -406,7 +406,9 @@ void red_black_tree_insert(struct RedBlackTree* tree,
         y -> size += 1;
         /* If exists, add `count` by 1. */
         if (tree -> compare(x -> key, key) == 0) {
-            x -> count += 1;
+            if (!tree -> is_allowed_duplicate) {
+                x -> count += 1;
+            }
             return;
         }
         x = x -> child[(tree -> compare(x -> key, key) < 0) ? 1 : 0];
