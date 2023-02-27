@@ -406,8 +406,9 @@ void red_black_tree_insert(struct RedBlackTree* tree, void* key) {
         y -> size += 1;
         /* If exists, add `count` by 1. */
         if (tree -> compare(x -> key, key) == 0) {
-            if (!tree -> is_allowed_duplicate) {
+            if (tree -> is_allowed_duplicate) {
                 x -> count += 1;
+                tree -> count += 1;
             }
             return;
         }
@@ -447,6 +448,7 @@ Bool red_black_tree_remove(struct RedBlackTree* tree, void* key) {
     }
     if (z != tree -> nil) {
         if (z -> count > 1) {
+            tree -> count -= 1;
             z -> count -= 1;
             return true;
         }
