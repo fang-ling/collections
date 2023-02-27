@@ -10,7 +10,7 @@
 #define var __auto_type
 
 /* This will clean out the heap */
-static void* items_in_decending_order(struct BinaryHeap *heap) {
+static void* items_in_descending_order(struct BinaryHeap *heap) {
     var buf = malloc(heap -> storage -> element_size * heap -> count);
     var i = 0;
     void* delta;
@@ -121,7 +121,7 @@ static Bool test_insert_random(void) {
         input[i] = i;
         sorted[i] = c - i - 1;
     }
-    for (var seed = 0; seed < 1; seed += 1) {
+    for (var seed = 0; seed < 5000; seed += 1) {
         srand(seed);
         /* Shuffle array */
         c_array_shuffle(input, c);
@@ -134,9 +134,10 @@ static Bool test_insert_random(void) {
             i += 1;
             expect_equal(&heap -> count, &i, equal);
         }
-        expect_equal_elements(sorted, items_in_decending_order(heap),
-                              c, sizeof(Int), equal);
+        var items = items_in_descending_order(heap);
+        expect_equal_elements(sorted, items, c, sizeof(Int), equal);
         binary_heap_deinit(heap);
+        free(items);
     }
     return true;
 }
