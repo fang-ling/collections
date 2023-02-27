@@ -6,12 +6,6 @@
 //
 
 #include "red_black_tree_test.h"
-#include "red_black_tree.h"
-#include "test_support.h"
-#include "types.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define var __auto_type
 
@@ -181,9 +175,63 @@ static Bool test_insert_random(void) {
     return true;
 }
 
+static Bool test_max(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    expect_null(red_black_tree_max(tree));
+
+    var delta = 12333ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&delta, red_black_tree_max(tree), int_equal);
+
+    delta = 12321ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 12333ll;
+    expect_equal(&delta, red_black_tree_max(tree), int_equal);
+
+    delta = 19348ll;
+    red_black_tree_insert(tree, &delta);
+    red_black_tree_insert(tree, &delta); /* 2nd insert */
+    expect_equal(&delta, red_black_tree_max(tree), int_equal);
+
+    delta = 19358ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&delta, red_black_tree_max(tree), int_equal);
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
+static Bool test_min(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    expect_null(red_black_tree_min(tree));
+
+    var delta = 19348ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&delta, red_black_tree_min(tree), int_equal);
+
+    delta = 19358ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 19348ll;
+    expect_equal(&delta, red_black_tree_min(tree), int_equal);
+
+    delta = 12333ll;
+    red_black_tree_insert(tree, &delta);
+    red_black_tree_insert(tree, &delta); /* 2nd insert */
+    expect_equal(&delta, red_black_tree_min(tree), int_equal);
+
+    delta = 12321ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&delta, red_black_tree_min(tree), int_equal);
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
     run_test("Red Black Tree", "test_insert", test_insert);
     run_test("Red Black Tree", "test_insert_random", test_insert_random);
+    run_test("Red Black Tree", "test_max", test_max);
+    run_test("Red Black Tree", "test_min", test_min);
 }
