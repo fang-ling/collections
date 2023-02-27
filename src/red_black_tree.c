@@ -30,6 +30,8 @@ static struct RedBlackTreeNode* node_init(void* key,
     node -> color = color;
     node -> count = count;
     node -> size = size;
+
+    node -> key = malloc(element_size); /* allocate space for key */
     if (key == NULL) {
         /* If either dest or src is a null pointer,
          * the behavior is undefined, even if count is zero.

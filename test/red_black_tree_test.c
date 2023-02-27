@@ -28,12 +28,12 @@ static Bool test_is_empty(void) {
 
     var delta = 19358ll;
     red_black_tree_insert(tree, &delta, true);
-    //expect_false(tree -> is_empty);
+    expect_false(tree -> is_empty);
 
-    //red_black_tree_remove(tree, &delta);
-    //expect_true(tree -> is_empty);
+    red_black_tree_remove(tree, &delta);
+    expect_true(tree -> is_empty);
 
-    //red_black_tree_deinit(tree);
+    red_black_tree_deinit(tree);
     return true;
 }
 
