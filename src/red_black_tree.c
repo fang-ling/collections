@@ -508,7 +508,7 @@ void* red_black_tree_min(struct RedBlackTree* tree) {
     if (tree -> is_empty) {
         return NULL;
     }
-    return minimum(tree, tree -> root);
+    return minimum(tree, tree -> root) -> key;
 }
 
 /* Returns the largest element in a search tree in O(lg n) time. */
@@ -516,7 +516,7 @@ void* red_black_tree_max(struct RedBlackTree* tree) {
     if (tree -> is_empty) {
         return NULL;
     }
-    return maximum(tree, tree -> root);
+    return maximum(tree, tree -> root) -> key;
 }
 
 /* Returns the smallest key greater than the given key. */
