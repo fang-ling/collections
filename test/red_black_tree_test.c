@@ -6,6 +6,8 @@
 //
 
 #include "red_black_tree_test.h"
+#include "red_black_tree.h"
+#include "test_support.h"
 
 #define var __auto_type
 
@@ -227,6 +229,21 @@ static Bool test_min(void) {
     return true;
 }
 
+static Bool test_predecessor(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    var delta = 12333ll;
+    expect_null(red_black_tree_predecessor(tree, &delta));
+
+    red_black_tree_insert(tree, &delta);
+    expect_null(red_black_tree_predecessor(tree, &delta));
+    var alpha = 12333ll;
+    expect_equal(&delta, red_black_tree_predecessor(tree, &alpha), int_equal);
+
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -234,4 +251,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_insert_random", test_insert_random);
     run_test("Red Black Tree", "test_max", test_max);
     run_test("Red Black Tree", "test_min", test_min);
+    run_test("Red Black Tree", "test_predecessor", test_predecessor);
 }
