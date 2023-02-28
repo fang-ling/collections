@@ -6,8 +6,6 @@
 //
 
 #include "red_black_tree_test.h"
-#include "red_black_tree.h"
-#include "test_support.h"
 
 #define var __auto_type
 
@@ -231,14 +229,47 @@ static Bool test_min(void) {
 
 static Bool test_predecessor(void) {
     var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
-    var delta = 12333ll;
+    var delta = 12321ll;
     expect_null(red_black_tree_predecessor(tree, &delta));
 
     red_black_tree_insert(tree, &delta);
     expect_null(red_black_tree_predecessor(tree, &delta));
+
     var alpha = 12333ll;
+    red_black_tree_insert(tree, &alpha);
     expect_equal(&delta, red_black_tree_predecessor(tree, &alpha), int_equal);
 
+    delta = 19348ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&alpha, red_black_tree_predecessor(tree, &delta), int_equal);
+
+    /* delta is not in the tree */
+    delta = 19358ll;
+    expect_null(red_black_tree_predecessor(tree, &delta));
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
+static Bool test_successor(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    var delta = 19358ll;
+    expect_null(red_black_tree_successor(tree, &delta));
+
+    red_black_tree_insert(tree, &delta);
+    expect_null(red_black_tree_successor(tree, &delta));
+
+    var alpha = 19348ll;
+    red_black_tree_insert(tree, &alpha);
+    expect_equal(&delta, red_black_tree_successor(tree, &alpha), int_equal);
+
+    delta = 12333ll;
+    red_black_tree_insert(tree, &delta);
+    expect_equal(&alpha, red_black_tree_successor(tree, &delta), int_equal);
+
+    /* delta is not in the tree */
+    delta = 12321ll;
+    expect_null(red_black_tree_successor(tree, &delta));
 
     red_black_tree_deinit(tree);
     return true;
@@ -252,4 +283,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_max", test_max);
     run_test("Red Black Tree", "test_min", test_min);
     run_test("Red Black Tree", "test_predecessor", test_predecessor);
+    run_test("Red Black Tree", "test_successor", test_successor);
 }

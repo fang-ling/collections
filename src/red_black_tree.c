@@ -6,8 +6,6 @@
 //
 
 #include "red_black_tree.h"
-#include <stdlib.h>
-#include <string.h>
 
 #define var __auto_type
 
@@ -521,9 +519,6 @@ void* red_black_tree_max(struct RedBlackTree* tree) {
 
 /* Returns the smallest key greater than the given key. */
 void* red_black_tree_successor(struct RedBlackTree* tree, void* key) {
-    if (tree -> is_empty) {
-        return NULL;
-    }
     var x = tree -> root;
     while (x != tree -> nil) { /* Find the node with key */
         if (tree -> compare(x -> key, key) == 0) {
@@ -552,17 +547,6 @@ void* red_black_tree_successor(struct RedBlackTree* tree, void* key) {
 
 /* Returns the largest key smaller than the given key. */
 void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
-    /*if (x == tree.nil) {
-        return tree.MIN;
-    } else if (tree.compare(x -> key, key) >= 0) {
-        return redblacktree_predecessor(tree, x -> child[0], key);
-    } else {
-        return generic_max(redblacktree_predecessor(tree, x -> child[1], key),
-                           x -> key, tree.compare);
-                           }*/
-    if (tree -> is_empty) {
-        return NULL;
-    }
     var x = tree -> root;
     while (x != tree -> nil) { /* Find the node with key */
         if (tree -> compare(x -> key, key) == 0) {
