@@ -275,6 +275,39 @@ static Bool test_successor(void) {
     return true;
 }
 
+static Bool test_select(void) {
+    Int sorted[] = {12321ll, 12333ll, 19324ll,
+                    19346ll, 19348ll, 19358ll,
+                    19358ll, 19358ll, 19359ll};
+    Int input[] = {12321ll, 12333ll, 19348ll,
+                   19358ll, 19324ll, 19346ll,
+                   19358ll, 19358ll, 19359ll};
+    Int rank[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    /* Order: 12321, 12333, 19324, 19346, 19348, 19358, 19358, 19358, 19359
+     * rank:  1      2      3      4      5      6      7      8      9
+     */
+    for (var seed = 0; seed < 1; seed += 1) {
+        srand(seed);
+        var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+        c_array_shuffle(input, 9);
+
+        expect_null(red_black_tree_select(tree, 12333));
+
+        for (var i = 0; i < 9; i += 1) {
+            red_black_tree_insert(tree, &input[i]);
+        }
+
+        for (var i = 0; i < 9; i += 1) {
+            expect_equal(&sorted[i],
+                         red_black_tree_select(tree, rank[i]),
+                         int_equal);
+        }
+        red_black_tree_deinit(tree);
+    }
+
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -284,4 +317,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_min", test_min);
     run_test("Red Black Tree", "test_predecessor", test_predecessor);
     run_test("Red Black Tree", "test_successor", test_successor);
+    run_test("Red Black Tree", "test_select", test_select);
 }
