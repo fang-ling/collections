@@ -360,6 +360,125 @@ static Bool test_contains(void) {
     return true;
 }
 
+static Bool test_remove(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    /* expect_fatal_error */
+    //red_black_tree_remove(tree, NULL);
+
+    var delta = 19358ll;
+    red_black_tree_insert(tree, &delta);
+    red_black_tree_remove(tree, &delta);
+    expect_true(tree -> is_empty);
+    delta = 0ll;
+    expect_equal(&delta, &tree -> count, int_equal);
+
+    delta = 12ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 9ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 12ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+
+    delta = 13ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 1ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 4ll;
+    red_black_tree_insert(tree, &delta);
+    delta = 13ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+
+    Int input[20];
+    for (var i = 0; i < 20; i += 1) {
+        input[i] = i + 1;
+    }
+    c_array_shuffle(input, 20);
+    for (var i = 0; i < 20; i += 1) {
+        red_black_tree_insert(tree, &input[i]);
+    }
+
+    delta = 20ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 19ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 18ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 17ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 16ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 15ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 14ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 13ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 12ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 11ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 10ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 9ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    /* One 9 was still in the tree from before */
+    delta = 9ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 8ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 7ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 6ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 5ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 4ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    /* One 4 was still in the tree from before */
+    delta = 4ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 3ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 2ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    delta = 1ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+    /* One 1 was still in the tree from before */
+    delta = 1ll;
+    expect_equal(red_black_tree_max(tree), &delta, int_equal);
+    red_black_tree_remove(tree, &delta);
+
+    /* expect_fatal_error */
+    //red_black_tree_remove(tree, NULL);
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -372,4 +491,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_select", test_select);
     run_test("Red Black Tree", "test_rank", test_rank);
     run_test("Red Black Tree", "test_contains", test_contains);
+    run_test("Red Black Tree", "test_remove", test_remove);
 }
