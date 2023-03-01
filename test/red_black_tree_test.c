@@ -479,6 +479,62 @@ static Bool test_remove(void) {
     return true;
 }
 
+static Bool test_max_struct(void) {
+    var tree = red_black_tree_init(sizeof(struct Car), true, car_cmp);
+
+    struct Car alpha;
+    alpha.name = "Alice";
+    alpha.speed = 12333;
+    red_black_tree_insert(tree, &alpha);
+    expect_equal(&alpha, red_black_tree_max(tree), car_equal);
+
+    struct Car beta;
+    beta.name = "Laura";
+    beta.speed = 1;
+    red_black_tree_insert(tree, &beta);
+    expect_equal(&alpha, red_black_tree_max(tree), car_equal);
+
+    struct Car gamma;
+    gamma.name = "Sue";
+    gamma.speed = 19333;
+    red_black_tree_insert(tree, &gamma);
+    expect_equal(&gamma, red_black_tree_max(tree), car_equal);
+
+    red_black_tree_deinit(tree);
+    return tree;
+}
+
+static Bool test_remove_struct(void) {
+    var tree = red_black_tree_init(sizeof(struct Car), true, car_cmp);
+    /* expect_fatal_error */
+    //red_black_tree_remove(tree, NULL);
+
+    struct Car beta;
+    beta.name = "Laura";
+    beta.speed = 1;
+    red_black_tree_insert(tree, &beta);
+
+    struct Car alpha;
+    alpha.name = "Alice";
+    alpha.speed = 12333;
+    red_black_tree_insert(tree, &alpha);
+
+    struct Car gamma;
+    gamma.name = "Sue";
+    gamma.speed = 19333;
+    red_black_tree_insert(tree, &gamma);
+
+    expect_equal(&gamma, red_black_tree_max(tree), car_equal);
+    red_black_tree_remove(tree, &gamma);
+    expect_equal(&alpha, red_black_tree_max(tree), car_equal);
+    red_black_tree_remove(tree, &alpha);
+    expect_equal(&beta, red_black_tree_max(tree), car_equal);
+    red_black_tree_remove(tree, &beta);
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -492,4 +548,6 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_rank", test_rank);
     run_test("Red Black Tree", "test_contains", test_contains);
     run_test("Red Black Tree", "test_remove", test_remove);
+    run_test("Red Black Tree", "test_max_struct", test_max_struct);
+    run_test("Red Black Tree", "test_remove_struct", test_remove_struct);
 }
