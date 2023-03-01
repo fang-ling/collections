@@ -578,7 +578,7 @@ void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
  */
 Int red_black_tree_rank(struct RedBlackTree* tree, void* key) {
     var x = tree -> root;
-    var rank = (Int) 0;
+    var rank = (Int) 0 + 1; /* Start at one */
 
     while (x != tree -> nil) {
         if (tree -> compare(x -> key, key) < 0) {

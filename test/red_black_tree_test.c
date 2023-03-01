@@ -6,6 +6,9 @@
 //
 
 #include "red_black_tree_test.h"
+#include "red_black_tree.h"
+#include "test_support.h"
+#include <stdlib.h>
 
 #define var __auto_type
 
@@ -286,7 +289,7 @@ static Bool test_select(void) {
     /* Order: 12321, 12333, 19324, 19346, 19348, 19358, 19358, 19358, 19359
      * rank:  1      2      3      4      5      6      7      8      9
      */
-    for (var seed = 0; seed < 1; seed += 1) {
+    for (var seed = 0; seed < 5000; seed += 1) {
         srand(seed);
         var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
         c_array_shuffle(input, 9);
@@ -308,6 +311,35 @@ static Bool test_select(void) {
     return true;
 }
 
+static Bool test_rank(void) {
+    Int sorted[] = {12321ll, 12333ll, 19324ll,
+                    19346ll, 19348ll, 19358ll,
+                    19358ll, 19358ll, 19359ll};
+    Int input[] = {12321ll, 12333ll, 19348ll,
+                   19358ll, 19324ll, 19346ll,
+                   19358ll, 19358ll, 19359ll};
+    Int rank[] = {1, 2, 3, 4, 5, 6, 6, 6, 9};
+    var delta = 0ll;
+    for (var seed = 0; seed < 5000; seed += 1) {
+        srand(seed);
+        var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+
+        c_array_shuffle(input, 9);
+
+        for (var i = 0; i < 9; i += 1) {
+            red_black_tree_insert(tree, &input[i]);
+        }
+
+        for (var i = 0; i < 9; i += 1) {
+            delta = red_black_tree_rank(tree, &sorted[i]);
+            expect_equal(&rank[i], &delta, int_equal);
+        }
+        red_black_tree_deinit(tree);
+    }
+
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -318,4 +350,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_predecessor", test_predecessor);
     run_test("Red Black Tree", "test_successor", test_successor);
     run_test("Red Black Tree", "test_select", test_select);
+    run_test("Red Black Tree", "test_rank", test_rank);
 }
