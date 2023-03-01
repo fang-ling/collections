@@ -6,9 +6,6 @@
 //
 
 #include "red_black_tree_test.h"
-#include "red_black_tree.h"
-#include "test_support.h"
-#include <stdlib.h>
 
 #define var __auto_type
 
@@ -340,6 +337,29 @@ static Bool test_rank(void) {
     return true;
 }
 
+static Bool test_contains(void) {
+    var tree = red_black_tree_init(sizeof(Int), true, int_cmp);
+    var delta = 19358ll;
+    expect_false(red_black_tree_contains(tree, &delta));
+
+    red_black_tree_insert(tree, &delta);
+    expect_true(red_black_tree_contains(tree, &delta));
+
+    delta = 12333ll;
+    red_black_tree_insert(tree, &delta);
+    expect_true(red_black_tree_contains(tree, &delta));
+
+    red_black_tree_insert(tree, &delta); /* 2 copy of 12333ll */
+    expect_true(red_black_tree_contains(tree, &delta));
+    red_black_tree_remove(tree, &delta); /* 1 copy of 12333ll */
+    expect_true(red_black_tree_contains(tree, &delta));
+    red_black_tree_remove(tree, &delta);
+    expect_false(red_black_tree_contains(tree, &delta));
+
+    red_black_tree_deinit(tree);
+    return true;
+}
+
 void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_is_empty", test_is_empty);
     run_test("Red Black Tree", "test_count", test_count);
@@ -351,4 +371,5 @@ void red_black_tree_test(void) {
     run_test("Red Black Tree", "test_successor", test_successor);
     run_test("Red Black Tree", "test_select", test_select);
     run_test("Red Black Tree", "test_rank", test_rank);
+    run_test("Red Black Tree", "test_contains", test_contains);
 }
