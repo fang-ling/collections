@@ -190,7 +190,7 @@ void array_append(struct Array* array, void* new_element);
  * - Complexity:
  *     O(n). If at_i == count, this function is equivalent to append().
  */
-void array_insert(struct Array* array, void* new_element, Int at_i);
+void array_insert(struct Array* array, Int at_i, void* new_element);
 /** End: Adding Elements **/
 
 /** Begin: Combining Arrays **/

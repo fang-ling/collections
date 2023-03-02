@@ -120,7 +120,7 @@ void* array_random_element(struct Array* array) {
 /** Begin: Adding Elements **/
 /* Adds a new element at the end of the array. */
 void array_append(struct Array* array, void* new_element) {
-    array_insert(array, new_element, array -> count);
+    array_insert(array, array -> count, new_element);
 }
 
 /* Inserts a new element at the specified position. */
@@ -133,7 +133,7 @@ void array_append(struct Array* array, void* new_element) {
  *     To reach amortized O(1) append(), we need to double the capacity when
  *     count == capacity.
  */
-void array_insert(struct Array* array, void* new_element, Int at_i) {
+void array_insert(struct Array* array, Int at_i, void* new_element) {
     check_index(array, at_i);
     array -> is_empty = false;
     if (array -> count >= array -> capacity) {
