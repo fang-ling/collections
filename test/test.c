@@ -9,20 +9,9 @@
 
 #include "binary_heap_test.h"
 #include "red_black_tree_test.h"
+#include "array_test.h"
 
 #define var __auto_type
-
-/** Begin: Private helpers **/
-/*Int int_cmp(void* lhs, void* rhs) {
-    if (*(Int*)lhs > *(Int*)rhs) {
-        return 1;
-    } else if(*(Int*)lhs < *(Int*)rhs) {
-        return -1;
-    }
-    return 0;
-    }*/
-
-/** End: Private helpers **/
 
 /** Begin: Creating an array **/
 /*Bool test_array_init() {
@@ -300,32 +289,21 @@ Bool test_array_remove_last() {
 
 Int32 main(void) {
     char time_buf[26];
-    var timer = time(NULL);
 
+    var timer = time(NULL);
     strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
     printf("Test Suite 'Binary Heap Test' started at %s\n", time_buf);
     binary_heap_test();
 
+    timer = time(NULL);
     strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
     printf("Test Suite 'Red Black Tree Test' started at %s\n", time_buf);
     red_black_tree_test();
 
-    /*run_test("Array", "test_array_init", test_array_init);
-    run_test("Array", "test_array_init2", test_array_init2);
-    run_test("Array", "test_array_init3", test_array_init3);
-    run_test("Array", "test_array_get", test_array_get);
-    run_test("Array", "test_array_set", test_array_set);
-    run_test("Array", "test_array_first", test_array_first);
-    run_test("Array", "test_array_last", test_array_last);
-    run_test("Array", "test_array_random_element", test_array_random_element);
-    run_test("Array", "test_array_append", test_array_append);
-    run_test("Array", "test_array_insert", test_array_insert);
-    run_test("Array", "test_array_append2", test_array_append2);
-    run_test("Array", "test_array_remove", test_array_remove);
-    run_test("Array", "test_array_remove_first", test_array_remove_first);
-    run_test("Array", "test_array_remove_last", test_array_remove_last);
-    run_test("Array", "test_array_swap_at", test_array_swap_at);*/
-
+    timer = time(NULL);
+    strftime(time_buf, 26, "%Y-%m-%d %H:%M:%S", localtime(&timer));
+    printf("Test Suite 'Red Black Tree Test' started at %s\n", time_buf);
+    array_test();
 
     return 0;
 }
