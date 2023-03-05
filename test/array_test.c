@@ -207,6 +207,64 @@ static Bool test_insert(void) {
     return true;
 }
 
+static Bool test_append_big(void) {
+    var c = 128ll;
+    Int input[c];
+    for (var i = 0ll;i < c; i += 1) {
+        input[i] = i;
+    }
+
+    var array = array_init(sizeof(Int));
+    var i = 0ll;
+    while (i < c) {
+        expect_equal(&array -> count, &i, int_equal);
+        array_append(array, &input[i]);
+        i += 1;
+        expect_equal(&array -> count, &i, int_equal);
+    }
+    expect_equal_elements(input, array -> data, c, sizeof(Int), int_equal);
+
+    array_deinit(array);
+    return true;
+}
+
+static Bool test_append2(void) {
+    var c = 128ll;
+    Int input[c * 2];
+    var delta = 12333ll;
+    var alpha = 19358ll;
+    for (var i = 0; i < c; i += 1) {
+        input[i] = delta;
+    }
+    for (var i = 0; i < c; i += 1) {
+        input[i + c] = alpha;
+    }
+
+    var empty1 = array_init(sizeof(Int));
+    var array = array_init3(sizeof(Int), &delta, c);
+    var rhs = array_init3(sizeof(Int), &alpha, c);
+    var empty2 = array_init(sizeof(Int));
+
+    var beta = 0ll;
+    array_append2(empty1, empty2);
+    expect_equal(&empty1 -> count, &beta, int_equal);
+
+    array_append2(empty1, array);
+    expect_equal(&empty1 -> count, &c, int_equal);
+    expect_equal_elements(empty1 -> data, input, c, sizeof(Int), int_equal);
+
+    array_append2(empty1, rhs);
+    c *= 2;
+    expect_equal(&empty1 -> count, &c, int_equal);
+    expect_equal_elements(empty1 -> data, input, c, sizeof(Int), int_equal);
+
+    array_append2(empty1, empty2);
+    expect_equal(&empty1 -> count, &c, int_equal);
+    expect_equal_elements(empty1 -> data, input, c, sizeof(Int), int_equal);
+
+    return true;
+}
+
 void array_test(void) {
     run_test("Array", "test_is_empty", test_is_empty);
     run_test("Array", "test_count", test_count);
@@ -216,4 +274,6 @@ void array_test(void) {
     run_test("Array", "test_last", test_last);
     run_test("Array", "test_append", test_append);
     run_test("Array", "test_insert", test_insert);
+    run_test("Array", "test_append_big", test_append_big);
+    run_test("Array", "test_append2", test_append2);
 }
