@@ -30,11 +30,6 @@ struct Task {
     Int priority;
 };
 
-static Int task_cmp(void* lhs, void* rhs) {
-    return int_cmp(&(((struct Task*)lhs) -> priority),
-                   &(((struct Task*)rhs) -> priority));
-}
-
 static Bool test_is_empty(void) {
     var array = array_init(sizeof(Int));
     expect_true(array -> is_empty);
@@ -265,6 +260,77 @@ static Bool test_append2(void) {
     return true;
 }
 
+static Bool test_remove(void) {
+    Int input[] = {12333ll, 19358ll, 19348ll, 12321ll, 19348ll, 19333ll};
+
+    var array = array_init(sizeof(Int));
+    /* expect fatal error */
+    //array_remove_lastn(array);
+    //free(array_remove_last(array));
+    //array_remove_firstn(array);
+    //free(array_remove_first(array));
+
+    for (var i = 0; i < 6; i += 1) {
+        array_append(array, &input[i]);
+    }
+    /* remove 19348 */
+    var alpha = 19348ll;
+    var delta = array_remove(array, 2); /* void* */
+    expect_equal(&alpha, delta, int_equal);
+    free(delta);
+    alpha = 5;
+    expect_equal(&alpha, &array -> count, int_equal);
+
+    /* remove first (12333) */
+    alpha = 12333ll;
+    delta = array_remove_first(array);
+    expect_equal(&alpha, delta, int_equal);
+    free(delta);
+    alpha = 4;
+    expect_equal(&alpha, &array -> count, int_equal);
+
+    /* remove last (19333) */
+    alpha = 19333ll;
+    delta = array_remove_last(array);
+    expect_equal(&alpha, delta, int_equal);
+    free(delta);
+    alpha = 3;
+    expect_equal(&alpha, &array -> count, int_equal);
+
+    /* remove first but not return */
+    array_remove_firstn(array);
+    alpha = 2;
+    expect_equal(&alpha, &array -> count, int_equal);
+
+    /* remove the rest */
+    while (!array -> is_empty) {
+        array_remove_lastn(array);
+        alpha -= 1;
+        expect_equal(&alpha, &array -> count, int_equal);
+    }
+
+    array_deinit(array);
+    return true;
+}
+
+static Bool test_swap_at(void) {
+    Int input[]    = {12333ll, 19358ll, 19348ll, 12321ll, 19348ll, 19333ll};
+    Int reversed[] = {19333ll, 19348ll, 12321ll, 19348ll, 19358ll, 12333ll};
+
+    var array = array_init(sizeof(Int));
+    for (var i = 0; i < 6; i += 1) {
+        array_append(array, &input[i]);
+    }
+
+    for (var i = 0; i < 3; i += 1) {
+        array_swap_at(array, i, 6 - i - 1);
+    }
+    expect_equal_elements(array -> data, reversed, 6, sizeof(Int), int_equal);
+
+    array_deinit(array);
+    return true;
+}
+
 void array_test(void) {
     run_test("Array", "test_is_empty", test_is_empty);
     run_test("Array", "test_count", test_count);
@@ -276,4 +342,6 @@ void array_test(void) {
     run_test("Array", "test_insert", test_insert);
     run_test("Array", "test_append_big", test_append_big);
     run_test("Array", "test_append2", test_append2);
+    run_test("Array", "test_remove", test_remove);
+    run_test("Array", "test_swap_at", test_swap_at);
 }
