@@ -10,23 +10,37 @@ import CCollections
 
 extension Benchmark {
     public mutating func add_array_benchmarks() {
-        self.addSimple(title: "Array<Int> append",
-                       input: [Int].self) { input in
-            let array = CCollections.Array<Int>()
-            for i in input {
-                array.append(i)
+        self.add(
+            title: "Array<Int> append",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                let array = CCollections.Array<Int>()
+                timer.measure {
+                    for i in input {
+                        array.append(i)
+                    }
+                }
+                /* Verify the correctness of my implementation. ;> */
+                precondition(array.count == input.count)
+                precondition(array.to_swift_array() == input)
+                blackHole(array)
             }
-            //precondition(array.count == input.count)
-            blackHole(array)
         }
         
-        self.addSimple(title: "Swift Array<Int> append",
-                       input: [Int].self) { input in
-            var array = [Int]()
-            for i in input {
-                array.append(i)
+        self.add(
+            title: "Swift Array<Int> append",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                var array = [Int]()
+                timer.measure {
+                    for i in input {
+                        array.append(i)
+                    }
+                }
+                blackHole(array)
             }
-            blackHole(array)
         }
     }
 }
