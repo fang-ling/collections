@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "swift-c-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fang-ling/swift-c-collections",
+      "state" : {
+        "revision" : "3cb5f8a985a280fbc132877e88bd2fbd8f297195",
+        "version" : "0.0.3"
+      }
+    },
+    {
       "identity" : "swift-collections-benchmark",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections-benchmark",

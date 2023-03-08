@@ -1,8 +1,10 @@
-@main
-public struct benchmark {
-    public private(set) var text = "Hello, World!"
+import CollectionsBenchmark
 
+@main
+public struct Main {
     public static func main() {
-        print(benchmark().text)
+        var benchmark = Benchmark(title: "Collection Benchmarks")
+        benchmark.add_array_benchmarks()
+        benchmark.main()
     }
 }
