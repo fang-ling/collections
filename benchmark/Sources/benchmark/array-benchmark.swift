@@ -25,6 +25,7 @@ extension Benchmark {
                 precondition(array.count == input.count)
                 precondition(array.to_swift_array() == input)
                 blackHole(array)
+                array.deinit()
             }
         }
         
@@ -37,6 +38,39 @@ extension Benchmark {
                 timer.measure {
                     for i in input {
                         array.append(i)
+                    }
+                }
+                blackHole(array)
+            }
+        }
+        
+        self.add(
+            title: "Array<Int> random insertions",
+            input: Insertions.self
+        ) { insertions in
+            return { timer in
+                let insertions = insertions.values
+                let array = CCollections.Array<Int>()
+                timer.measure {
+                    for i in insertions.indices {
+                        array.insert(insertions[i], at: Int64(insertions[i]))
+                    }
+                }
+                array.deinit()
+                blackHole(array)
+            }
+        }
+        
+        self.add(
+            title: "Swift Array<Int> random insertions",
+            input: Insertions.self
+        ) { insertions in
+            return { timer in
+                let insertions = insertions.values
+                var array: [Int] = []
+                timer.measure {
+                    for i in insertions.indices {
+                        array.insert(i, at: insertions[i])
                     }
                 }
                 blackHole(array)

@@ -1,15 +1,23 @@
 {
-  "kind": "group",
-  "title": "All results",
-  "directory": "Results",
-  "contents": [
-    {
-      "kind": "chart",
-      "title": "Array - prepending individual integers",
-      "tasks": [
-        "Array<Int> append",
-        "Swift Array<Int> append"
-      ]
-    }
-  ]
+    "kind": "group",
+    "title": "All results",
+    "directory": "Results",
+    "contents": [
+        {
+            "kind": "chart",
+            "title": "Array - appending individual integers",
+            "tasks": [
+                "Array<Int> append",
+                "Swift Array<Int> append"
+            ]
+        },
+        {
+            "kind": "chart",
+            "title": "Array - random insertions",
+            "tasks": [
+                "Array<Int> random insertions",
+                "Swift Array<Int> random insertions"
+            ]
+        }
+    ]
 }
