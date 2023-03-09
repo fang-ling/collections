@@ -147,7 +147,7 @@ void array_insert(struct Array* array, Int at_i, void* new_element) {
     } else {
         array -> count += 1;
         /* Create a buffer to hold elements behind the insert position. */
-        var num_moves = array -> count - at_i;
+        var num_moves = array -> count - at_i - 1;
         var buf = malloc(num_moves * array -> element_size);
         /* Copy the rest to buffer */
         memcpy(buf,
