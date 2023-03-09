@@ -1,0 +1,15 @@
+{
+  "kind": "group",
+  "title": "All results",
+  "directory": "Results",
+  "contents": [
+    {
+      "kind": "chart",
+      "title": "Array - prepending individual integers",
+      "tasks": [
+        "Array<Int> append",
+        "Swift Array<Int> append"
+      ]
+    }
+  ]
+}
