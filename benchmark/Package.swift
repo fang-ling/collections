@@ -8,7 +8,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections-benchmark",
                  from: "0.0.3"),
         .package(url: "https://github.com/fang-ling/swift-c-collections",
-                 from: "0.0.7")
+                 from: "0.0.9")
     ],
     targets: [
         .executableTarget(

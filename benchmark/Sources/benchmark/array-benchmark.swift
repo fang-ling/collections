@@ -76,5 +76,38 @@ extension Benchmark {
                 blackHole(array)
             }
         }
+        
+        self.add(
+            title: "Array<Int> remove_last",
+            input: Int.self
+        ) { size in
+            return { timer in
+                let array = CCollections.Array<Int>()
+                for i in 0 ..< size {
+                    array.append(i)
+                }
+                timer.measure {
+                    while !array.is_empty {
+                        array.remove_last()
+                    }
+                }
+                precondition(array.is_empty)
+                precondition(array.count == 0)
+            }
+        }
+        
+        self.add(
+            title: "Swift Array<Int> removeLast",
+            input: Int.self
+        ) { size in
+            return { timer in
+                var array = [Int](0 ..< size)
+                timer.measure {
+                    while !array.isEmpty {
+                        array.removeLast()
+                    }
+                }
+            }
+        }
     }
 }
