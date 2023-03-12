@@ -24,7 +24,17 @@
             "title": "Array - remove last",
             "tasks": [
                 "Array<Int> remove_last",
+                "Array<Int> remove_lastn",
                 "Swift Array<Int> removeLast"
+            ]
+        },
+        {
+            "kind": "chart",
+            "title": "Array - random removals",
+            "tasks": [
+                "Array<Int> random removals",
+                "Array<Int> random removals(n)",
+                "Swift Array<Int> random removals"
             ]
         }
     ]
