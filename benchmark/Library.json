@@ -36,6 +36,14 @@
                 "Array<Int> random removals(n)",
                 "Swift Array<Int> random removals"
             ]
+        },
+        {
+            "kind": "chart",
+            "title": "BinaryHeap - inserting individual integers",
+            "tasks": [
+                "BinaryHeap<Int64> insert",
+                "Swift Heap<Int64> insert"
+            ]
         }
     ]
 }
