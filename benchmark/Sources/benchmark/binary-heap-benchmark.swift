@@ -14,12 +14,16 @@ extension Benchmark {
     public mutating func add_binary_heap_benchmarks() {
         self.add(
             title: "BinaryHeap<Int64> insert",
-            input: [Int64].self
+            input: [Int].self
         ) { input in
             return { timer in
+                var input64 = [Int64]()
+                for i in input {
+                    input64.append(Int64(i))
+                }
                 let heap = BinaryHeap()
                 timer.measure {
-                    for i in input {
+                    for i in input64 {
                         heap.insert(i)
                     }
                 }
@@ -32,12 +36,16 @@ extension Benchmark {
         
         self.add(
             title: "Swift Heap<Int64> insert",
-            input: [Int64].self
+            input: [Int].self
         ) { input in
             return { timer in
+                var input64 = [Int64]()
+                for i in input {
+                    input64.append(Int64(i));
+                }
                 var heap = Heap<Int64>()
                 timer.measure {
-                    for i in input {
+                    for i in input64 {
                         heap.insert(i)
                     }
                 }
