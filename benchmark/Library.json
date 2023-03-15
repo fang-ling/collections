@@ -3,46 +3,13 @@
     "title": "All results",
     "directory": "Results",
     "contents": [
+        
         {
             "kind": "chart",
-            "title": "Array - appending individual integers",
+            "title": "BinaryHeap - lookups",
             "tasks": [
-                "Array<Int> append",
-                "Swift Array<Int> append"
-            ]
-        },
-        {
-            "kind": "chart",
-            "title": "Array - random insertions",
-            "tasks": [
-                "Array<Int> random insertions",
-                "Swift Array<Int> random insertions"
-            ]
-        },
-        {
-            "kind": "chart",
-            "title": "Array - remove last",
-            "tasks": [
-                "Array<Int> remove_last",
-                "Array<Int> remove_lastn",
-                "Swift Array<Int> removeLast"
-            ]
-        },
-        {
-            "kind": "chart",
-            "title": "Array - random removals",
-            "tasks": [
-                "Array<Int> random removals",
-                "Array<Int> random removals(n)",
-                "Swift Array<Int> random removals"
-            ]
-        },
-        {
-            "kind": "chart",
-            "title": "BinaryHeap - inserting individual integers",
-            "tasks": [
-                "BinaryHeap<Int64> insert",
-                "Swift Heap<Int64> insert"
+                "BinaryHeap<Int64> lookup",
+                "Swift Heap<Int64> lookup"
             ]
         }
     ]

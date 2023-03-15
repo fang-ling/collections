@@ -97,25 +97,6 @@ extension Benchmark {
         }
         
         self.add(
-            title: "Array<Int> remove_lastn",
-            input: Int.self
-        ) { size in
-            return { timer in
-                let array = CCollections.Array<Int>()
-                for i in 0 ..< size {
-                    array.append(i)
-                }
-                timer.measure {
-                    while !array.is_empty {
-                        array.remove_lastn()
-                    }
-                }
-                precondition(array.is_empty)
-                precondition(array.count == 0)
-            }
-        }
-        
-        self.add(
             title: "Swift Array<Int> removeLast",
             input: Int.self
         ) { size in
@@ -126,26 +107,6 @@ extension Benchmark {
                         array.removeLast()
                     }
                 }
-            }
-        }
-        
-        self.add(
-            title: "Array<Int> random removals(n)",
-            input: Insertions.self
-        ) { insertions in
-            let removals = insertions.values.reversed()
-            return { timer in
-                let array = CCollections.Array<Int>()
-                for i in 0 ..< removals.count {
-                    array.append(i)
-                }
-                timer.measure {
-                    for i in removals {
-                        array.removen(at: Int64(i))
-                    }
-                }
-                array.deinit()
-                blackHole(array)
             }
         }
         

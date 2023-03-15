@@ -53,5 +53,79 @@ extension Benchmark {
                 blackHole(heap)
             }
         }
+        
+        self.add(
+            title: "BinaryHeap<Int64> removal",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                let heap = BinaryHeap()
+                for i in input {
+                    heap.insert(Int64(i))
+                }
+                timer.measure {
+                    while !heap.is_empty {
+                        heap.remove()
+                    }
+                }
+                /* Verify the correctness of my implementation. ;> */
+                precondition(heap.count == heap.count)
+                blackHole(heap)
+                heap.deinit()
+            }
+        }
+        
+        self.add(
+            title: "Swift Heap<Int64> removal",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                var heap = Heap<Int64>()
+                for i in input {
+                    heap.insert(Int64(i))
+                }
+                timer.measure {
+                    while !heap.isEmpty {
+                        _ = heap.removeMax()
+                    }
+                }
+                blackHole(heap)
+            }
+        }
+        
+        self.add(
+            title: "BinaryHeap<Int64> lookup",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                let heap = BinaryHeap()
+                for i in input {
+                    heap.insert(Int64(i))
+                }
+                timer.measure {
+                    blackHole(heap.max())
+                }
+                /* Verify the correctness of my implementation. ;> */
+                precondition(heap.count == heap.count)
+                blackHole(heap)
+                heap.deinit()
+            }
+        }
+        
+        self.add(
+            title: "Swift Heap<Int64> lookup",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                var heap = Heap<Int64>()
+                for i in input {
+                    heap.insert(Int64(i))
+                }
+                timer.measure {
+                    blackHole(heap.max())
+                }
+                blackHole(heap)
+            }
+        }
     }
 }

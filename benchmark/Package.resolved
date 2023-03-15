@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/fang-ling/swift-c-collections",
       "state" : {
-        "revision" : "2545b6e70873a0bb1db865f94e26b057500ed85f",
-        "version" : "0.0.11"
+        "revision" : "9c716363fff8240f953336397017a7d717043d7c",
+        "version" : "0.0.12"
       }
     },
     {
