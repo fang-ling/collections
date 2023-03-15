@@ -61,7 +61,9 @@ struct Array* array_init(Int element_size) {
 
 /* Creates a new array containing the specified number of a single, repeated
  * value. */
-struct Array* array_init3(Int element_size, void* repeated_value, Int count) {
+struct Array* array_init3(Int element_size,
+                          const void* repeated_value,
+                          Int count) {
     var array = array_init2(element_size, count);
     for (var i = 0; i < count; i += 1) {
         memcpy(array -> data + element_size * i, repeated_value, element_size);
@@ -75,19 +77,19 @@ struct Array* array_init3(Int element_size, void* repeated_value, Int count) {
  * something like Java ArrayList's get() & set().
  */
 /* Reads the element at the specified position. */
-void* array_get(struct Array* array, Int index) {
+const void* array_get(const struct Array* array, Int index) {
     return array -> data + array -> element_size * index;
 }
 
 /* Write to the element at the specified position. */
-void array_set(struct Array* array, Int index, void* element) {
+void array_set(struct Array* array, Int index, const void* element) {
     memcpy(array -> data + array -> element_size * index,
            element,
            array -> element_size);
 }
 
 /* Returns the first element of the collection. */
-void* array_first(struct Array* array) {
+const void* array_first(const struct Array* array) {
     if (array -> is_empty) {
         return NULL;
     } else {
@@ -96,7 +98,7 @@ void* array_first(struct Array* array) {
 }
 
 /* Returns the last element of the collection. */
-void* array_last(struct Array* array) {
+const void* array_last(const struct Array* array) {
     if (array -> is_empty) {
         return NULL;
     } else {
@@ -105,7 +107,7 @@ void* array_last(struct Array* array) {
 }
 
 /* Returns a random element of the collection. */
-void* array_random_element(struct Array* array) {
+const void* array_random_element(const struct Array* array) {
     if (array -> is_empty) {
         return NULL;
     } else {
@@ -119,7 +121,7 @@ void* array_random_element(struct Array* array) {
 
 /** Begin: Adding Elements **/
 /* Adds a new element at the end of the array. */
-void array_append(struct Array* array, void* new_element) {
+void array_append(struct Array* array, const void* new_element) {
     array_insert(array, array -> count, new_element);
 }
 
@@ -133,7 +135,7 @@ void array_append(struct Array* array, void* new_element) {
  *     To reach amortized O(1) append(), we need to double the capacity when
  *     count == capacity.
  */
-void array_insert(struct Array* array, Int at_i, void* new_element) {
+void array_insert(struct Array* array, Int at_i, const void* new_element) {
     check_index(array, at_i);
     array -> is_empty = false;
     if (array -> count >= array -> capacity) {
@@ -169,7 +171,7 @@ void array_insert(struct Array* array, Int at_i, void* new_element) {
 
 /** Begin: Combining Arrays **/
 /* Adds the elements of an array to the end of this array */
-void array_append2(struct Array* lhs, struct Array* rhs) {
+void array_append2(struct Array* lhs, const struct Array* rhs) {
     if (lhs -> element_size != rhs -> element_size) {
         return;
     }
@@ -182,7 +184,7 @@ void array_append2(struct Array* lhs, struct Array* rhs) {
 /** End: Combining Arrays **/
 
 /** Begin: Removing Elements **/
-/* Removes and returns the element at the specified position. */
+/* Removes the element at the specified position. */
 /* Implementation Notes:
  *   - It's caller's responsibility to free the return value.
  *   - A valid remove has a valid index, i.e. `0 ≤ at_i ≤ count`
@@ -191,51 +193,7 @@ void array_append2(struct Array* lhs, struct Array* rhs) {
  *     To reach amortized O(1) append(), we need to halve the capacity when
  *     array is 25% full, i.e. `count * 4 <= capacity`.
  */
-void* array_remove(struct Array* array, Int at_i) {
-    /* make index non-valid, if i == count */
-    check_index(array, at_i == array -> count ? at_i + 1 : at_i);
-    var ret = malloc(array -> element_size);
-    memcpy(ret, array_get(array, at_i), array -> element_size);
-    array -> count -= 1;
-    if (at_i != array -> count) { // Already decrement
-        /* Create a buffer to hold elements behind the remove position. */
-        var num_moves = array -> count - at_i;
-        var buf = malloc(num_moves * array -> element_size);
-        /* Copy the rest to buffer */
-        memcpy(buf,
-               array -> data + array -> element_size * (at_i + 1),
-               num_moves * array -> element_size);
-        /* Move back */
-        memcpy(array -> data + array -> element_size * at_i,
-               buf,
-               num_moves * array -> element_size);
-        /* Free buffer */
-        free(buf);
-    }
-    if (array -> count * 4 <= array -> capacity) {
-        array_sbrk(array, array -> capacity / 2);
-    }
-    if (array -> count == 0) {
-        array -> is_empty = true;
-    }
-    return ret;
-}
-/* Removes and returns the last element of the array.
- * It's caller's responsibility to free the return value.
- */
-void* array_remove_last(struct Array* array) {
-    return array_remove(array, array -> count - 1);
-}
-
-/* Removes and returns the first element of the array.
- * It's caller's responsibility to free the return value.
- */
-void* array_remove_first(struct Array* array) {
-    return array_remove(array, 0);
-}
-
-/* Removes the element at the specified position. */
-void array_removen(struct Array* array, Int at_i) {
+void array_remove(struct Array* array, Int at_i) {
     /* make index non-valid, if i == count */
     check_index(array, at_i == array -> count ? at_i + 1 : at_i);
     //var ret = malloc(array -> element_size);
@@ -264,15 +222,18 @@ void array_removen(struct Array* array, Int at_i) {
     }
     //return ret;
 }
-
-/* Removes the last element of the array. */
-void array_remove_lastn(struct Array* array) {
-    array_removen(array, array -> count - 1);
+/* Removes the last element of the array.
+ * It's caller's responsibility to free the return value.
+ */
+void array_remove_last(struct Array* array) {
+    return array_remove(array, array -> count - 1);
 }
 
-/* Removes the first element of the array. */
-void array_remove_firstn(struct Array* array) {
-    array_removen(array, 0);
+/* Removes the first element of the array.
+ * It's caller's responsibility to free the return value.
+ */
+void array_remove_first(struct Array* array) {
+    return array_remove(array, 0);
 }
 /** End: Removing Elements **/
 

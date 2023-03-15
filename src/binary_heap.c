@@ -109,8 +109,8 @@ void binary_heap_insert(struct BinaryHeap* heap, void* key) {
 /** End: Insertion **/
 
 /** Begin: Removal **/
-/* Removes and Returns the max item in the heap. */
-void* binary_heap_remove(struct BinaryHeap* heap) {
+/* Removes the max item in the heap. */
+void binary_heap_remove(struct BinaryHeap* heap) {
     /* To remove the largest element at index 0. Exchange it with the last item
      * in the array and then we trickle it down to where it belongs in the
      * heap.
@@ -122,18 +122,6 @@ void* binary_heap_remove(struct BinaryHeap* heap) {
     heap -> is_empty = heap -> count == 0 ? true : false;
     array_swap_at(heap -> storage, 0, heap -> count);
     max_heapify_down(heap, 0);
-    return array_remove_last(heap -> storage);
-}
-
-/* Removes the max item in the heap. */
-void binary_heap_removen(struct BinaryHeap* heap) {
-    if (heap -> count == 0) {
-        fatal_error("Remove a item from a empty heap");
-    }
-    heap -> count -= 1;
-    heap -> is_empty = heap -> count == 0 ? true : false;
-    array_swap_at(heap -> storage, 0, heap -> count);
-    max_heapify_down(heap, 0);
-    array_remove_lastn(heap -> storage);
+    array_remove_last(heap -> storage);
 }
 /** End: Removal **/

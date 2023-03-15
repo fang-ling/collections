@@ -13,14 +13,14 @@
 static void* items_in_descending_order(struct BinaryHeap *heap) {
     var buf = malloc(heap -> storage -> element_size * heap -> count);
     var i = 0;
-    void* delta;
+    const void* delta;
     while (!heap -> is_empty) {
-        delta = binary_heap_remove(heap);
+        delta = binary_heap_max(heap);
         memcpy(buf + i * heap -> storage -> element_size,
                delta,
                heap -> storage -> element_size);
-        free(delta);
         i += 1;
+        binary_heap_remove(heap);
     }
     return buf;
 }
@@ -67,7 +67,7 @@ static Bool test_is_empty(void) {
     binary_heap_insert(heap, &delta);
     expect_false(heap -> is_empty);
 
-    free(binary_heap_remove(heap));
+    binary_heap_remove(heap);
     expect_true(heap -> is_empty);
 
     binary_heap_deinit(heap);
@@ -89,7 +89,7 @@ static Bool test_count(void) {
     delta = 2ll;
     expect_equal(&heap -> count, &delta, equal);
 
-    free(binary_heap_remove(heap));
+    binary_heap_remove(heap);
     delta = 1ll;
     expect_equal(&heap -> count, &delta, equal);
 
@@ -174,16 +174,18 @@ static Bool test_remove(void) {
 
     var delta = 19358ll;
     binary_heap_insert(heap, &delta);
-    var buf = binary_heap_remove(heap);
+    var buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
 
     delta = 12ll;
     binary_heap_insert(heap, &delta);
     delta = 9ll;
     binary_heap_insert(heap, &delta);
-    buf = binary_heap_remove(heap);
+    buf = binary_heap_max(heap);
     delta = 12ll;
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
 
     delta = 13ll;
     binary_heap_insert(heap, &delta);
@@ -192,8 +194,9 @@ static Bool test_remove(void) {
     delta = 4ll;
     binary_heap_insert(heap, &delta);
     delta = 13ll;
-    buf = binary_heap_remove(heap);
+    buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
 
     Int input[20];
     for (var i = 0; i < 20; i += 1) {
@@ -204,55 +207,78 @@ static Bool test_remove(void) {
         binary_heap_insert(heap, &input[i]);
     }
 
-    delta = 20ll; buf = binary_heap_remove(heap);
+    delta = 20ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 19ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 19ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 18ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 18ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 17ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 17ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 16ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 16ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 15ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 15ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 14ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 14ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 13ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 13ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 12ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 12ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 11ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 11ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 10ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 10ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 9ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 9ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
     /* One 9 was still in the heap from before */
-    delta = 9ll; buf = binary_heap_remove(heap);
+    delta = 9ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 8ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 8ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 7ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 7ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 6ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 6ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 5ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 5ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 4ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 4ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
     /* One 4 was still in the heap from before */
-    delta = 4ll; buf = binary_heap_remove(heap);
+    delta = 4ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 3ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 3ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 2ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 2ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
-    delta = 1ll; buf = binary_heap_remove(heap);
+    binary_heap_remove(heap);
+    delta = 1ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
     /* One 1 was still in the heap from before */
-    delta = 1ll; buf = binary_heap_remove(heap);
+    delta = 1ll; buf = binary_heap_max(heap);
     expect_equal(buf, &delta, equal);
+    binary_heap_remove(heap);
 
     /* expect_fatal_error */
     //free(binary_heap_remove(heap));
@@ -310,9 +336,12 @@ static Bool test_remove_struct(void) {
     gamma.priority = 19333;
     binary_heap_insert(heap, &gamma);
 
-    expect_equal(&gamma, binary_heap_remove(heap), equal2);
-    expect_equal(&alpha, binary_heap_remove(heap), equal2);
-    expect_equal(&beta, binary_heap_remove(heap), equal2);
+    expect_equal(&gamma, binary_heap_max(heap), equal2);
+    binary_heap_remove(heap);
+    expect_equal(&alpha, binary_heap_max(heap), equal2);
+    binary_heap_remove(heap);
+    expect_equal(&beta, binary_heap_max(heap), equal2);
+    binary_heap_remove(heap);
 
     binary_heap_deinit(heap);
     return true;

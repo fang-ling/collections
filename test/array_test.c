@@ -38,13 +38,13 @@ static Bool test_is_empty(void) {
     array_append(array, &delta);
     expect_false(array -> is_empty);
 
-    array_remove_lastn(array);
+    array_remove_last(array);
     expect_true(array -> is_empty);
 
     array_insert(array, 0, &delta);
     expect_false(array -> is_empty);
 
-    array_remove_firstn(array);
+    array_remove_first(array);
     expect_true(array -> is_empty);
 
     array_deinit(array);
@@ -74,11 +74,11 @@ static Bool test_count(void) {
     delta = 2ll;
     expect_equal(&delta, &array -> count, int_equal);
 
-    free(array_remove_first(array));
+    array_remove_first(array);
     delta = 1ll;
     expect_equal(&delta, &array -> count, int_equal);
 
-    array_remove_lastn(array);
+    array_remove_last(array);
     delta = 0ll;
     expect_equal(&delta, &array -> count, int_equal);
 
@@ -128,7 +128,7 @@ static Bool test_first(void) {
     }
     for (var i = 5 - 1; i >= 0; i -= 1) { /* The order is reversed */
         expect_equal(&input[i], array_first(array), int_equal);
-        free(array_remove_first(array));
+        array_remove_first(array);
     }
 
     array_deinit(array);
@@ -146,7 +146,7 @@ static Bool test_last(void) {
     }
     for (var i = 0; i < 5; i += 1) {
         expect_equal(&input[i], array_last(array), int_equal);
-        array_remove_lastn(array);
+        array_remove_last(array);
     }
 
     array_deinit(array);
@@ -275,36 +275,30 @@ static Bool test_remove(void) {
     }
     /* remove 19348 */
     var alpha = 19348ll;
-    var delta = array_remove(array, 2); /* void* */
-    expect_equal(&alpha, delta, int_equal);
-    free(delta);
+    array_remove(array, 2);
     alpha = 5;
     expect_equal(&alpha, &array -> count, int_equal);
 
     /* remove first (12333) */
     alpha = 12333ll;
-    delta = array_remove_first(array);
-    expect_equal(&alpha, delta, int_equal);
-    free(delta);
+    array_remove_first(array);
     alpha = 4;
     expect_equal(&alpha, &array -> count, int_equal);
 
     /* remove last (19333) */
     alpha = 19333ll;
-    delta = array_remove_last(array);
-    expect_equal(&alpha, delta, int_equal);
-    free(delta);
+    array_remove_last(array);
     alpha = 3;
     expect_equal(&alpha, &array -> count, int_equal);
 
-    /* remove first but not return */
-    array_remove_firstn(array);
+    /* remove first */
+    array_remove_first(array);
     alpha = 2;
     expect_equal(&alpha, &array -> count, int_equal);
 
     /* remove the rest */
     while (!array -> is_empty) {
-        array_remove_lastn(array);
+        array_remove_last(array);
         alpha -= 1;
         expect_equal(&alpha, &array -> count, int_equal);
     }

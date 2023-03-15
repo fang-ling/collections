@@ -48,11 +48,8 @@ void binary_heap_insert(struct BinaryHeap* heap, void* key);
 /** End: Insertion **/
 
 /** Begin: Removal **/
-/* Removes and Returns the max item in the heap. */
-void* binary_heap_remove(struct BinaryHeap* heap);
-
-/* Removes the max item in the heap */
-void binary_heap_removen(struct BinaryHeap *heap);
+/* Removes the max item in the heap. */
+void binary_heap_remove(struct BinaryHeap* heap);
 /** End: Removal **/
 
 #endif /* binary_heap_h */

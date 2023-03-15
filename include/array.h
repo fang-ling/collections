@@ -94,7 +94,9 @@ struct Array* array_init2(Int element_size, Int count);
  *     var array = array_init3(sizeof(Int), &repeated_value, 5);
  *     ```
  */
-struct Array* array_init3(Int element_size, void* repeated_value, Int count);
+struct Array* array_init3(Int element_size,
+                          const void* repeated_value,
+                          Int count);
 /** End: Creating an array **/
 
 /** Begin: Accessing Elements **/
@@ -112,7 +114,7 @@ struct Array* array_init3(Int element_size, void* repeated_value, Int count);
  * - Discussion:
  *     See discussion of array_set(array:index:).
  */
-void* array_get(struct Array* array, Int index);
+const void* array_get(const struct Array* array, Int index);
 
 /* Write to the element at the specified position.
  * - Parameters:
@@ -136,7 +138,7 @@ void* array_get(struct Array* array, Int index);
  *     // Prints "12333"
  *     ```
  */
-void array_set(struct Array* array, Int index, void* element);
+void array_set(struct Array* array, Int index, const void* element);
 
 /* Returns the first element of the collection.
  * - Parameters:
@@ -147,7 +149,7 @@ void array_set(struct Array* array, Int index, void* element);
  *     The first element of the collection. If the collection is empty, the
  *     return value of this function is NULL.
  */
-void* array_first(struct Array* array);
+const void* array_first(const struct Array* array);
 
 /* Returns the last element of the collection.
  * - Parameters:
@@ -158,7 +160,7 @@ void* array_first(struct Array* array);
  *     The last element of the collection. If the collection is empty, the
  *     return value of this function is NULL.
  */
-void* array_last(struct Array* array);
+const void* array_last(const struct Array* array);
 
 /* Returns a random element of the collection.
  * - Parameters:
@@ -169,7 +171,7 @@ void* array_last(struct Array* array);
  *     A random element from the collection. If the collection is empty, the
  *     function returns NULL.
  */
-void* array_random_element(struct Array* array);
+const void* array_random_element(const struct Array* array);
 /** End: Accessing Elements **/
 
 /** Begin: Adding Elements **/
@@ -180,7 +182,7 @@ void* array_random_element(struct Array* array);
  * - Complexity:
  *     O(1) (amortized)
  */
-void array_append(struct Array* array, void* new_element);
+void array_append(struct Array* array, const void* new_element);
 
 /* Inserts a new element at the specified position.
  * - Parameters:
@@ -190,7 +192,7 @@ void array_append(struct Array* array, void* new_element);
  * - Complexity:
  *     O(n). If at_i == count, this function is equivalent to append().
  */
-void array_insert(struct Array* array, Int at_i, void* new_element);
+void array_insert(struct Array* array, Int at_i, const void* new_element);
 /** End: Adding Elements **/
 
 /** Begin: Combining Arrays **/
@@ -201,11 +203,11 @@ void array_insert(struct Array* array, Int at_i, void* new_element);
  * - Complexity:
  *     O(m), where m is the length of rhs.
  */
-void array_append2(struct Array* lhs, struct Array* rhs);
+void array_append2(struct Array* lhs, const struct Array* rhs);
 /** End: Combining Arrays **/
 
 /** Begin: Removing Elements **/
-/* Removes and returns the element at the specified position.
+/* Removes the element at the specified position.
  * - Parameters:
  *     array: The array to access.
  *     index: The position of the element to remove.
@@ -215,8 +217,8 @@ void array_append2(struct Array* lhs, struct Array* rhs);
  * - Return Value:
  *     The removed element, it's caller's responsibility to free this value.
  */
-void* array_remove(struct Array* array, Int index);
-/* Removes and returns the last element of the array.
+void array_remove(struct Array* array, Int index);
+/* Removes the last element of the array.
  * - Parameters:
  *     array: The array to access.
  * - Complexity:
@@ -225,8 +227,8 @@ void* array_remove(struct Array* array, Int index);
  *     The last element of the array, it's caller's responsibility to free
  *     this value.
  */
-void* array_remove_last(struct Array* array);
-/* Removes and returns the first element of the array.
+void array_remove_last(struct Array* array);
+/* Removes the first element of the array.
  * - Parameters:
  *     array: The array to access.
  * - Complexity:
@@ -235,42 +237,8 @@ void* array_remove_last(struct Array* array);
  *     The first element of the array, it's caller's responsibility to free
  *     this value.
  */
-void* array_remove_first(struct Array* array);
+void array_remove_first(struct Array* array);
 
-/* Removes the element at the specified position.
- * - Parameters:
- *     array: The array to access.
- *     index: The position of the element to remove.
- * - Complexity:
- *     O(n), if index == count - 1, this function is equivalent to
- *     remove_lastn().
- */
-void array_removen(struct Array* array, Int index);
-/* Removes the last element of the array.
- * - Parameters:
- *     array: The array to access.
- * - Complexity:
- *     O(1)
- */
-void array_remove_lastn(struct Array* array);
-/* Removes the first element of the array.
- * - Parameters:
- *     array: The array to access.
- * - Complexity:
- *     O(n)
- */
-void array_remove_firstn(struct Array* array);
-/** End: Removing Elements **/
-
-/** Begin: Reordering an Array’s Elements **/
-/* Exchanges the values at the specified indices of the array
- * - Parameters:
- *     array: The array to access.
- *     i: The index of the first value to swap.
- *     j: The index of the second value to swap.
- * - Complexity:
- *     O(1)
- */
 void array_swap_at(struct Array* array, Int i, Int j);
 /** End: Reordering an Array’s Elements **/
 
