@@ -9,7 +9,7 @@
 
 #define var __auto_type
 
-static Int int_cmp(void* lhs, void* rhs) {
+static Int int_cmp(const void* lhs, const void* rhs) {
     if (*(Int*)lhs > *(Int*)rhs) {
         return 1;
     } else if(*(Int*)lhs < *(Int*)rhs) {
@@ -18,7 +18,7 @@ static Int int_cmp(void* lhs, void* rhs) {
     return 0;
 }
 
-static Bool int_equal(void* lhs, void* rhs) {
+static Bool int_equal(const void* lhs, const void* rhs) {
     if (int_cmp(lhs, rhs) == 0) {
         return true;
     }

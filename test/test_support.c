@@ -31,7 +31,7 @@ void expect_false(Bool value) {
     fatal_error("true is not false");
 }
 
-void expect_null(void* value) {
+void expect_null(const void* value) {
     if (value == NULL) {
         return;
     }
@@ -40,14 +40,16 @@ void expect_null(void* value) {
     fatal_error(buf);
 }
 
-void expect_not_null(void* value) {
+void expect_not_null(const void* value) {
     if (value != NULL) {
         return;
     }
     fatal_error("value is NULL");
 }
 
-void expect_equal(void* lhs, void* rhs, Bool (*equal)(void* lhs, void* rhs)) {
+void expect_equal(const void* lhs,
+                  const void* rhs,
+                  Bool (*equal)(const void* lhs, const void* rhs)) {
     if (equal(lhs, rhs)) {
         return;
     }
@@ -56,9 +58,9 @@ void expect_equal(void* lhs, void* rhs, Bool (*equal)(void* lhs, void* rhs)) {
     fatal_error(buf);
 }
 
-void expect_not_equal(void* lhs,
-                      void* rhs,
-                      Bool (*equal)(void* lhs, void* rhs)) {
+void expect_not_equal(const void* lhs,
+                      const void* rhs,
+                      Bool (*equal)(const void* lhs, const void* rhs)) {
     if (!equal(lhs, rhs)) {
         return;
     }
@@ -67,25 +69,17 @@ void expect_not_equal(void* lhs,
     fatal_error(buf);
 }
 
-void expect_equal_elements(void* lhs,
-                           void* rhs,
+void expect_equal_elements(const void* lhs,
+                           const void* rhs,
                            Int count,
                            Int element_size,
-                           Bool (*equal)(void* lhs, void* rhs)) {
+                           Bool (*equal)(const void* lhs, const void* rhs)) {
     if (memcmp(lhs, rhs, count * element_size) == 0) {
         return;
     }
     char buf[64];
     snprintf(buf, 64, "%p does not have equal elements to %p", lhs, rhs);
     fatal_error(buf);
-    /*for (var i = 0; i < count; i += 1) {
-        if (!equal(lhs + i * element_size, rhs + i * element_size)) {
-            char buf[64];
-            snprintf(buf, 64, "%p does not have equal elements to %p",
-                     lhs, rhs);
-            fatal_error(buf);
-        }
-        }*/
 }
 
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void)) {

@@ -40,7 +40,7 @@ struct RedBlackTree {
     /* A Boolean value indicating whether the tree allows duplicate keys. */
     Bool is_allowed_duplicate;
     /* Compare function, like Java */
-    Int (*compare)(void* lhs, void* rhs);
+    Int (*compare)(const void* lhs, const void* rhs);
 };
 
 /** Begin: Creating a tree **/
@@ -48,7 +48,7 @@ struct RedBlackTree {
 struct RedBlackTree*
 red_black_tree_init(Int element_size,
                     Bool is_allowed_duplicate,
-                    Int (*compare)(void* lhs, void* rhs));
+                    Int (*compare)(const void* lhs, const void* rhs));
 /** End: Creating a tree **/
 
 /** Begin: Destroying a tree **/

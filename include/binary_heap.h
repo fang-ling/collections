@@ -22,13 +22,14 @@ struct BinaryHeap {
     struct Array* storage;
 
     /* Compare function, like Java */
-    Int (*compare)(void* lhs, void* rhs);
+    Int (*compare)(const void* lhs, const void* rhs);
 };
 
 /** Begin: Creating a heap **/
 /* Creates a new, empty heap. */
 struct BinaryHeap* binary_heap_init(Int element_size,
-                                    Int (*compare)(void* lhs, void* rhs));
+                                    Int (*compare)(const void* lhs,
+                                                   const void* rhs));
 /** End: Creaing a heap **/
 
 /** Begin: Destroying a heap **/
@@ -38,7 +39,7 @@ void binary_heap_deinit(struct BinaryHeap* heap);
 
 /** Begin: Lookup **/
 /* Returns the largest element in a heap in constant time. */
-void* binary_heap_max(struct BinaryHeap* heap);
+const void* binary_heap_max(struct BinaryHeap* heap);
 /** End: Lookup **/
 
 /** Begin: Insertion **/

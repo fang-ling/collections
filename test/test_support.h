@@ -17,18 +17,20 @@
 void expect_true(Bool value);
 void expect_false(Bool value);
 
-void expect_null(void* value);
-void expect_not_null(void* value);
+void expect_null(const void* value);
+void expect_not_null(const void* value);
 
-void expect_equal(void *lhs, void *rhs, Bool (*equal)(void *lhs, void *rhs));
-void expect_not_equal(void* lhs,
-                      void* rhs,
-                      Bool (*equal)(void* lhs, void* rhs));
-void expect_equal_elements(void* lhs,
-                           void* rhs,
+void expect_equal(const void *lhs,
+                  const void *rhs,
+                  Bool (*equal)(const void *lhs, const void *rhs));
+void expect_not_equal(const void* lhs,
+                      const void* rhs,
+                      Bool (*equal)(const void* lhs, const void* rhs));
+void expect_equal_elements(const void* lhs,
+                           const void* rhs,
                            Int count,
                            Int element_size,
-                           Bool (*equal)(void* lhs, void* rhs));
+                           Bool (*equal)(const void* lhs, const void* rhs));
 
 void run_test(const Char* ds, const Char* fn, Bool (*test_function)(void));
 

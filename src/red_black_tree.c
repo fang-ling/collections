@@ -351,7 +351,7 @@ static void tree_deinit(struct RedBlackTree* tree,
 struct RedBlackTree*
 red_black_tree_init(Int element_size,
                     Bool is_allowed_duplicate,
-                    Int (*compare)(void* lhs, void* rhs)) {
+                    Int (*compare)(const void* lhs, const void* rhs)) {
     var tree = (struct RedBlackTree*)malloc(sizeof(struct RedBlackTree));
     tree -> element_size = element_size;
     tree -> count = 0;

@@ -25,7 +25,7 @@ static void* items_in_descending_order(struct BinaryHeap *heap) {
     return buf;
 }
 
-static Int cmp(void* lhs, void* rhs) {
+static Int cmp(const void* lhs, const void* rhs) {
     if (*(Int*)lhs < *(Int*)rhs) {
         return -1;
     } else if (*(Int*)lhs > *(Int*)rhs) {
@@ -34,7 +34,7 @@ static Int cmp(void* lhs, void* rhs) {
     return 0;
 }
 
-static Bool equal(void* lhs, void* rhs) {
+static Bool equal(const void* lhs, const void* rhs) {
     if (cmp(lhs, rhs) == 0) {
         return true;
     }
@@ -46,12 +46,12 @@ struct Task {
     Int priority;
 };
 
-static Int cmp2(void* lhs, void* rhs) {
+static Int cmp2(const void* lhs, const void* rhs) {
     return cmp(&(((struct Task*)lhs) -> priority),
                &(((struct Task*)rhs) -> priority));
 }
 
-static Bool equal2(void* lhs, void* rhs) {
+static Bool equal2(const void* lhs, const void* rhs) {
     if (cmp2(lhs, rhs) == 0) {
         return strcmp(((struct Task*)lhs) -> name,
                       ((struct Task*)rhs) -> name) == 0;

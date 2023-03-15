@@ -12,7 +12,8 @@
 /** Begin: Creating a heap **/
 /* Creates a new, empty heap. */
 struct BinaryHeap* binary_heap_init(Int element_size,
-                                    Int (*compare)(void* lhs, void* rhs)) {
+                                    Int (*compare)(const void* lhs,
+                                                   const void* rhs)) {
     var heap = (struct BinaryHeap*)malloc(sizeof(struct BinaryHeap));
     heap -> count = 0;
     heap -> is_empty = true;
@@ -86,7 +87,7 @@ static void max_heapify_down(struct BinaryHeap* heap, Int i) {
 
 /** Begin: Lookup **/
 /* Returns the largest element in a heap in constant time. */
-void* binary_heap_max(struct BinaryHeap* heap) {
+const void* binary_heap_max(struct BinaryHeap* heap) {
     if (heap -> is_empty) {
         return NULL;
     }

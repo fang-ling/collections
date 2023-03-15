@@ -25,7 +25,7 @@ static void* items_in_ascending_order(struct RedBlackTree* tree) {
     return buf;
 }
 
-static Int int_cmp(void* lhs, void* rhs) {
+static Int int_cmp(const void* lhs, const void* rhs) {
     if (*(Int*)lhs < *(Int*)rhs) {
         return -1;
     } else if (*(Int*)lhs > *(Int*)rhs) {
@@ -34,7 +34,7 @@ static Int int_cmp(void* lhs, void* rhs) {
     return 0;
 }
 
-static Bool int_equal(void* lhs, void* rhs) {
+static Bool int_equal(const void* lhs, const void* rhs) {
     return int_cmp(lhs, rhs) == 0 ? true : false;
 }
 
@@ -43,12 +43,12 @@ struct Car {
     Int speed;
 };
 
-static Int car_cmp(void* lhs, void* rhs) {
+static Int car_cmp(const void* lhs, const void* rhs) {
     return int_cmp(&(((struct Car*)lhs) -> speed),
                    &(((struct Car*)rhs) -> speed));
 }
 
-static Bool car_equal(void* lhs, void* rhs) {
+static Bool car_equal(const void* lhs, const void* rhs) {
     if (car_cmp(lhs, rhs) == 0) {
         return strcmp(((struct Car*)lhs) -> name,
                       ((struct Car*)rhs) -> name) == 0;
