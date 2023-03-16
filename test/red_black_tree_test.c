@@ -13,7 +13,7 @@
 static void* items_in_ascending_order(struct RedBlackTree* tree) {
     var buf = malloc(tree -> element_size * tree -> count);
     var i = 0;
-    void* delta;
+    const void* delta;
     while (!tree -> is_empty) {
         delta = red_black_tree_min(tree);
         memcpy(buf + i * tree -> element_size,

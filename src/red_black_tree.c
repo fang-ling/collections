@@ -11,7 +11,7 @@
 
 /** Begin: Private helpers **/
 /* Creates a new red black tree node */
-static struct RedBlackTreeNode* node_init(void* key,
+static struct RedBlackTreeNode* node_init(const void* key,
                                           Int element_size,
                                           Int size,
                                           Int count,
@@ -384,7 +384,7 @@ void red_black_tree_deinit(struct RedBlackTree* tree) {
 
 /** Begin: Insertion **/
 /* Insert a new item into the tree */
-void red_black_tree_insert(struct RedBlackTree* tree, void* key) {
+void red_black_tree_insert(struct RedBlackTree* tree, const void* key) {
     /* This works by creating a new red node with the key to where it belongs
      * in the tree, using binary search and then fix red black tree property
      * by calling insert_fixup().
@@ -426,7 +426,7 @@ void red_black_tree_insert(struct RedBlackTree* tree, void* key) {
 /** End: Insertion **/
 
 /** Begin: Removal **/
-Bool red_black_tree_remove(struct RedBlackTree* tree, void* key) {
+Bool red_black_tree_remove(struct RedBlackTree* tree, const void* key) {
     if (tree -> is_empty) {
         fatal_error("Can't remove from an empty red black tree");
     }
@@ -502,7 +502,7 @@ Bool red_black_tree_remove(struct RedBlackTree* tree, void* key) {
 
 /** Begin: Lookup **/
 /* Returns the smallest element in a search tree in O(lg n) time. */
-void* red_black_tree_min(struct RedBlackTree* tree) {
+const void* red_black_tree_min(struct RedBlackTree* tree) {
     if (tree -> is_empty) {
         return NULL;
     }
@@ -510,7 +510,7 @@ void* red_black_tree_min(struct RedBlackTree* tree) {
 }
 
 /* Returns the largest element in a search tree in O(lg n) time. */
-void* red_black_tree_max(struct RedBlackTree* tree) {
+const void* red_black_tree_max(struct RedBlackTree* tree) {
     if (tree -> is_empty) {
         return NULL;
     }
@@ -518,7 +518,8 @@ void* red_black_tree_max(struct RedBlackTree* tree) {
 }
 
 /* Returns the smallest key greater than the given key. */
-void* red_black_tree_successor(struct RedBlackTree* tree, void* key) {
+const void* red_black_tree_successor(struct RedBlackTree* tree,
+                                     const void* key) {
     var x = tree -> root;
     while (x != tree -> nil) { /* Find the node with key */
         if (tree -> compare(x -> key, key) == 0) {
@@ -546,7 +547,8 @@ void* red_black_tree_successor(struct RedBlackTree* tree, void* key) {
 }
 
 /* Returns the largest key smaller than the given key. */
-void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
+const void* red_black_tree_predecessor(struct RedBlackTree* tree,
+                                       const void* key) {
     var x = tree -> root;
     while (x != tree -> nil) { /* Find the node with key */
         if (tree -> compare(x -> key, key) == 0) {
@@ -576,7 +578,7 @@ void* red_black_tree_predecessor(struct RedBlackTree* tree, void* key) {
 /* Returns the position of x with key in the linear order determined by an
  * inorder tree walk of tree.
  */
-Int red_black_tree_rank(struct RedBlackTree* tree, void* key) {
+Int red_black_tree_rank(struct RedBlackTree* tree, const void* key) {
     var x = tree -> root;
     var rank = (Int) 0 + 1; /* Start at one */
 
@@ -592,7 +594,7 @@ Int red_black_tree_rank(struct RedBlackTree* tree, void* key) {
 }
 
 /* Returns the i-th smallest key in a tree */
-void* red_black_tree_select(struct RedBlackTree* tree, Int i) {
+const void* red_black_tree_select(struct RedBlackTree* tree, Int i) {
     var x = tree -> root;
     while (x != tree -> nil) {
         if (x -> child[0] -> size + 1 <= i &&
@@ -613,7 +615,7 @@ void* red_black_tree_select(struct RedBlackTree* tree, Int i) {
 /* Returns a Boolean value indicating whether the tree contains the given
  * element.
  */
-Bool red_black_tree_contains(struct RedBlackTree* tree, void* key) {
+Bool red_black_tree_contains(struct RedBlackTree* tree, const void* key) {
     var x = tree -> root;
     while (x != tree -> nil) { /* Find the node with key */
         if (tree -> compare(x -> key, key) == 0) {
