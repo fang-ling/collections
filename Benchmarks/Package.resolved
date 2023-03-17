@@ -1,21 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "c-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fang-ling/c-collections",
+      "state" : {
+        "branch" : "move-to-swift",
+        "revision" : "ef670faf3135affdf0ad886a61051e471076a5dd"
+      }
+    },
+    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
         "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
         "version" : "1.2.2"
-      }
-    },
-    {
-      "identity" : "swift-c-collections",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/fang-ling/swift-c-collections",
-      "state" : {
-        "revision" : "a563337d147c8e0e856ea1531a05269ed394d812",
-        "version" : "0.0.13"
       }
     },
     {

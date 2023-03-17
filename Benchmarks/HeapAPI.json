@@ -1,0 +1,16 @@
+{
+    "kind": "group",
+    "title": "Heap API Benchmarks",
+    "directory": "Results",
+    "contents": [
+        {
+            "kind": "chart",
+            "title": "Heap insertions",
+            "tasks": [
+                "vEB-Tree (Int) insert (with overhead)",
+                "vEB-Tree (Int) insert (without overhead)",
+                "Swift Heap<Int> insert"
+            ]
+        }
+    ]
+}

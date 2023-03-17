@@ -1,8 +1,11 @@
+import CollectionsBenchmark
+
 @main
 public struct Benchmarks {
-    public private(set) var text = "Hello, World!"
-
     public static func main() {
-        print(Benchmarks().text)
+        var benchmark = Benchmark(title: "Collection Benchmarks")
+        benchmark.add_swift_heap_benchmark()
+        benchmark.add_veb_tree_benchmark()
+        benchmark.main()
     }
 }
