@@ -6,7 +6,6 @@
 //
 
 import CollectionsBenchmark
-import Collections
 import XHL
 
 extension Benchmark {
