@@ -19,11 +19,9 @@ let package = Package(
                 .product(name: "CollectionsBenchmark",
                          package: "swift-collections-benchmark"),
                 .product(name: "Collections",
-                         package: "swift-collections",
-                         moduleAliases: ["Collections" : "SCollections"]),
-                .product(name: "collections",
-                         package: "c-collections"/*,
-                         moduleAliases: ["collections" : "XHL"]*/)
+                         package: "swift-collections"),
+                .product(name: "XHL",
+                         package: "c-collections")
             ]),
         .testTarget(
             name: "BenchmarksTests",

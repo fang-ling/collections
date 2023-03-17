@@ -3,10 +3,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "collections",
+    name: "XHL",
     products: [
         .library(
-            name: "Collections",
+            name: "XHL",
             targets: ["collections"]),
     ],
     dependencies: [],
