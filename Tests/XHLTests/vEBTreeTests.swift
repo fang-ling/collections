@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import collections
+@testable import XHL
 
 final class vEBTreeTests: XCTestCase {
     func testExample() throws {

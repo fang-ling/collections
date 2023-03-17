@@ -1,0 +1,35 @@
+{
+    "kind": "group",
+    "title": "vEB-Tree Benchmarks",
+    "directory": "vEB-Tree",
+    "contents": [
+        {
+            "kind": "group",
+            "title": "vEB-Tree Operations",
+            "contents": [
+                {
+                    "kind": "chart",
+                    "title": "operations",
+                    "tasks": [
+                        "vEB-Tree (Int) insert",
+                        "vEB-Tree (Int) removal"
+                    ]
+                }
+            ]
+        },
+        {
+            "kind": "group",
+            "title": "vEB-Tree vs Swift Heap",
+            "contents": [
+                {
+                    "kind": "chart",
+                    "title": "insert",
+                    "tasks": [
+                        "vEB-Tree (Int) insert",
+                        "Swift Heap<Int> insert"
+                    ]
+                }
+            ]
+        }
+    ]
+}

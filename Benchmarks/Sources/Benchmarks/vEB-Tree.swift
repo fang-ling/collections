@@ -7,36 +7,47 @@
 
 import CollectionsBenchmark
 import XHL
+import Foundation
+
+extension Int {
+    public static func next_power(_ x : Int) -> Int {
+        var u = 1
+        while u < x { u <<= 1 }
+        return u < 2 ? 2 : u
+    }
+}
 
 extension Benchmark {
     public mutating func add_veb_tree_benchmark() {
         self.add(
-            title: "vEB-Tree (Int) insert (with overhead)",
+            title: "vEB-Tree (Int) insert",
             input: [Int].self
         ) { input in
             return { timer in
                 timer.measure {
-                    var veb_tree = vEBTree(u: input.count)
+                    let veb_tree = vEBTree(u: Int.next_power(input.count))
                     for i in input {
                         veb_tree.insert(i)
                     }
+                    blackHole(veb_tree)
                 }
-                blackHole(veb_tree)
             }
         }
         
         self.add(
-            title: "vEB-Tree (Int) insert (without overhead)",
+            title: "vEB-Tree (Int) removal",
             input: [Int].self
         ) { input in
             return { timer in
-                var veb_tree = vEBTree(u: input.count)
+                let veb_tree = vEBTree(u: Int.next_power(input.count))
+                for i in input {
+                    veb_tree.insert(i)
+                }
                 timer.measure {
                     for i in input {
-                        veb_tree.insert(i)
+                        veb_tree.remove(i)
                     }
                 }
-                blackHole(veb_tree)
             }
         }
     }
