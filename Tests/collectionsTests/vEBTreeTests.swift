@@ -15,9 +15,11 @@ final class vEBTreeTests: XCTestCase {
             tree.insert(i)
             XCTAssertEqual(i, tree.maximum()!)
         }
-        for i in 0 ..< 128 {
-            tree.insert(i)
-            XCTAssertEqual(127, tree.maximum()!)
+        for i in (0 ..< 128).reversed() {
+            tree.remove(i)
+            if i - 1 >= 0 {
+                XCTAssertEqual(i - 1, tree.maximum()!)
+            }
         }
     }
 }
