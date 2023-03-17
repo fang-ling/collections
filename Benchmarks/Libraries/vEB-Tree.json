@@ -11,6 +11,7 @@
                     "kind": "chart",
                     "title": "operations",
                     "tasks": [
+                        "vEB-Tree (Int) build empty tree",
                         "vEB-Tree (Int) insert",
                         "vEB-Tree (Int) removal"
                     ]
@@ -26,7 +27,9 @@
                     "title": "insert",
                     "tasks": [
                         "vEB-Tree (Int) insert",
-                        "Swift Heap<Int> insert"
+                        "Swift Heap<Int> insert",
+                        "vEB-Tree (Int) insert 4x",
+                        "Swift Heap<Int> insert 4x"
                     ]
                 }
             ]

@@ -24,5 +24,23 @@ extension Benchmark {
                 blackHole(heap)
             }
         }
+        
+        self.add(
+            title: "Swift Heap<Int> insert 4x",
+            input: [Int].self
+        ) { input in
+            return { timer in
+                var heap = Heap<Int>()
+                timer.measure {
+                    for i in input {
+                        heap.insert(i)
+                        heap.insert(i)
+                        heap.insert(i)
+                        heap.insert(i)
+                    }
+                }
+                blackHole(heap)
+            }
+        }
     }
 }
