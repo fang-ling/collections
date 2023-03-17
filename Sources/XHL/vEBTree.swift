@@ -57,6 +57,11 @@ public class vEBTree {
     /// - Parameter u: The range of the possible integer values.
     /// - Complexity: O(*u*)
     public init(u : Int) {
+        if u < 2 {
+            fatalError("The size of universe must be " +
+                       "greater than or equal to 2")
+        }
+        
         count = 0
         
         self.u = u
