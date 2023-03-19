@@ -59,7 +59,11 @@ public class vEBTree {
     public init(u : Int) {
         if u < 2 {
             fatalError("The size of universe must be " +
-                       "greater than or equal to 2")
+                       "greater than or equal to 2.")
+        }
+        
+        if (u & (u - 1)) != 0 {
+            fatalError("The size of universe must be an exact power of 2.")
         }
         
         count = 0
@@ -236,5 +240,54 @@ public class vEBTree {
     public func remove(_ element : Int) {
         remove(element, 1)
         count -= 1
+    }
+    
+    public func predecessor(_ element : Int) -> Int? {
+        if u == 2 {
+            if element == 1 && min == 0 {
+                return 0
+            }
+            return nil
+        }
+        if max != nil && element > max! {
+            return max!
+        }
+        let min_low = cluster[high(element)].minimum()
+        if min_low != nil && low(element) > min_low! {
+            let offset = cluster[high(element)].predecessor(low(element))!
+            return index(high(element), offset)
+        }
+        let pred_cluster = summary!.predecessor(high(element))
+        if pred_cluster == nil {
+            if min != nil && element > min! {
+                return min
+            }
+            return nil
+        }
+        let offset = cluster[pred_cluster!].maximum()!
+        return index(pred_cluster!, offset)
+    }
+    
+    public func successor(_ element : Int) -> Int? {
+        if u == 2 {
+            if element == 0 && max == 1 {
+                return 1
+            }
+            return nil
+        }
+        if min != nil && element < min! {
+            return min
+        }
+        let max_low = cluster[high(element)].maximum()
+        if max_low != nil && low(element) < max_low! {
+            let offset = cluster[high(element)].successor(low(element))!
+            return index(high(element), offset)
+        }
+        let succ_cluster = summary!.successor(high(element))
+        if succ_cluster == nil {
+            return nil
+        }
+        let offset = cluster[succ_cluster!].minimum()!
+        return index(succ_cluster!, offset)
     }
 }
