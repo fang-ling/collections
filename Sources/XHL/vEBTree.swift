@@ -136,6 +136,9 @@ public class vEBTree {
     }
     
     public func insert(_ new_element : Int) {
+        if new_element >= u {
+            fatalError("New element must smaller than the size of universe.")
+        }
         insert(new_element, 1)
         count += 1
     }
@@ -238,6 +241,9 @@ public class vEBTree {
     }
     
     public func remove(_ element : Int) {
+        if element >= u {
+            fatalError("New element must smaller than the size of universe.")
+        }
         remove(element, 1)
         count -= 1
     }
