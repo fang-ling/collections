@@ -273,4 +273,55 @@ final class vEBTreeTests: XCTestCase {
         XCTAssertEqual(tree.count, 0)
         XCTAssertEqual(tree.items_in_ascending_order(), [])
     }
+    
+    func test_predecessor() {
+        let tree = vEBTree(u: 1 << 20)
+        XCTAssertEqual(tree.predecessor(0), nil)
+        XCTAssertEqual(tree.predecessor(19358), nil)
+        
+        tree.insert(19358)
+        XCTAssertEqual(tree.predecessor(19358), nil)
+        
+        tree.insert(19358)
+        XCTAssertEqual(tree.predecessor(19358), nil)
+        
+        tree.insert(1)
+        XCTAssertEqual(tree.predecessor(19358), 1)
+        
+        tree.insert(12321)
+        XCTAssertEqual(tree.predecessor(19358), 12321)
+        
+        XCTAssertEqual(tree.predecessor(1), nil)
+    }
+    
+    func test_successor() {
+        let tree = vEBTree(u: 1 << 20)
+        /* Expect fatal error */
+        //_ = tree.predecessor(1 << 20)
+        
+        XCTAssertEqual(tree.successor(0), nil)
+        
+        tree.insert(19358)
+        XCTAssertEqual(tree.successor(12321), 19358)
+        
+        tree.insert(12321)
+        XCTAssertEqual(tree.successor(12361), 19358)
+        
+        XCTAssertEqual(tree.successor(12308), 12321)
+    }
+    
+    func test_contains() {
+        let tree = vEBTree(u: 1 << 20)
+        XCTAssertFalse(tree.contains(19358))
+        XCTAssertFalse(tree.contains(1 << 21))
+        
+        tree.insert(19358)
+        XCTAssertTrue(tree.contains(19358))
+        
+        tree.insert(12321)
+        XCTAssertTrue(tree.contains(12321))
+        
+        tree.remove(19358)
+        XCTAssertFalse(tree.contains(19358))
+    }
 }

@@ -158,7 +158,7 @@ public class vEBTree {
         if element == min || element == max {
             return true
         }
-        if u == 2 {
+        if u == 2 || element >= u {
             return false
         }
         return cluster[high(element)].contains(low(element))
@@ -242,13 +242,16 @@ public class vEBTree {
     
     public func remove(_ element : Int) {
         if element >= u {
-            fatalError("New element must smaller than the size of universe.")
+            fatalError("Element must smaller than the size of universe.")
         }
         remove(element, 1)
         count -= 1
     }
     
     public func predecessor(_ element : Int) -> Int? {
+        if element >= u {
+            fatalError("Element must smaller than the size of universe.")
+        }
         if u == 2 {
             if element == 1 && min == 0 {
                 return 0
@@ -275,6 +278,9 @@ public class vEBTree {
     }
     
     public func successor(_ element : Int) -> Int? {
+        if element >= u {
+            fatalError("New Element must smaller than the size of universe.")
+        }
         if u == 2 {
             if element == 0 && max == 1 {
                 return 1
