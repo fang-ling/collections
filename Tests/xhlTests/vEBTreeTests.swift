@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import XHL
+@testable import xhl
 
 extension vEBTree {
     /* Removes all the element in ascending order */

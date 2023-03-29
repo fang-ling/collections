@@ -3,19 +3,19 @@
 import PackageDescription
 
 let package = Package(
-    name: "XHL",
+    name: "xhl",
     products: [
         .library(
-            name: "XHL",
-            targets: ["XHL"]),
+            name: "xhl",
+            targets: ["xhl"]),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "XHL",
+            name: "xhl",
             dependencies: []),
         .testTarget(
-            name: "XHLTests",
-            dependencies: ["XHL"]),
+            name: "xhlTests",
+            dependencies: ["xhl"]),
     ]
 )
