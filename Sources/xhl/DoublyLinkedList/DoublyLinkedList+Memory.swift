@@ -8,7 +8,7 @@
 import Foundation
 
 extension DoublyLinkedList {
-    mutating func add_to_buffer(_ node : Node) -> Int {
+    mutating func malloc(_ node : Node) -> Int {
         var index : Int
         if unused.last != nil {
             index = unused.removeLast()
