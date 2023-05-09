@@ -12,5 +12,11 @@ extension DoublyLinkedList {
         var item : Element
         var next : Int?
         var prev : Int?
+        
+        init(prev: Int?, item: Element, next: Int?) {
+            self.item = item
+            self.next = next
+            self.prev = prev
+        }
     }
 }

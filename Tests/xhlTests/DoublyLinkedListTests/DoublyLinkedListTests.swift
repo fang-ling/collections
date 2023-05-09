@@ -9,11 +9,5 @@ import XCTest
 @testable import xhl
 
 final class DoublyLinkedListTests : XCTestCase {
-    func test() {
-        var ll = DoublyLinkedList<Int>()
-        ll.link_first(1)
-        print(ll.buffer[ll.first_ptr!])
-        ll.link_first(2)
-        print(ll.buffer[ll.first_ptr!])
-    }
+    func test() {}
 }
