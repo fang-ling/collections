@@ -19,4 +19,12 @@ extension DoublyLinkedList {
         }
         return index
     }
+    
+    mutating func free(_ index : Int) {
+        if index == buffer.count - 1 {
+            buffer.removeLast()
+        } else {
+            unused.append(index)
+        }
+    }
 }

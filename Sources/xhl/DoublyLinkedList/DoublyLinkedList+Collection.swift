@@ -18,6 +18,7 @@ extension DoublyLinkedList {
         } else {
             buffer[f!].prev = new_node_ptr
         }
+        count += 1
     }
     
     /* Links e as last element. */
@@ -30,6 +31,7 @@ extension DoublyLinkedList {
         } else {
             buffer[l!].next = new_node_ptr
         }
+        count += 1
     }
     
     /* Inserts element e before non-nil Node successor. */
@@ -45,5 +47,62 @@ extension DoublyLinkedList {
         } else {
             buffer[predecessor_ptr!].next = new_node_ptr
         }
+        count += 1
+    }
+    
+    /* Unlinks non-null first node. */
+    mutating func unlink_first() -> Element {
+        /// assert first_ptr != nil
+        let element = buffer[first_ptr!].item
+        let next_ptr = buffer[first_ptr!].next
+        free(first_ptr!)
+        first_ptr = next_ptr
+        if next_ptr == nil {
+            last_ptr = nil
+        } else {
+            buffer[next_ptr!].prev = nil
+        }
+        count -= 1
+        return element
+    }
+    
+    /* Unlinks non-null last node. */
+    mutating func unlink_last() -> Element {
+        /// assert last_ptr != nil
+        let element = buffer[last_ptr!].item
+        let prev_ptr = buffer[last_ptr!].prev
+        free(last_ptr!)
+        last_ptr = prev_ptr
+        if prev_ptr == nil {
+            first_ptr = nil
+        } else {
+            buffer[prev_ptr!].next = nil
+        }
+        count -= 1
+        return element
+    }
+    
+    /* Unlinks non-null node x. */
+    mutating func unlink(_ x_ptr : Int?) -> Element {
+        /// assert x_ptr != nil
+        let element = buffer[x_ptr!].item
+        let next_ptr = buffer[x_ptr!].next
+        let prev_ptr = buffer[x_ptr!].prev
+        
+        if prev_ptr == nil {
+            first_ptr = next_ptr
+        } else {
+            buffer[prev_ptr!].next = next_ptr
+        }
+        
+        if next_ptr == nil {
+            last_ptr = prev_ptr
+        } else {
+            buffer[next_ptr!].prev = prev_ptr
+        }
+        
+        free(x_ptr!)
+        count -= 1
+        return element
     }
 }

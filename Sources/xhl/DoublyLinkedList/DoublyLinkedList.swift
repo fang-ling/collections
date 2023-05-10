@@ -11,9 +11,7 @@ struct DoublyLinkedList<Element> {
     var buffer : [Node]
     var unused : [Int]
     
-    var count : Int {
-        get { buffer.count - unused.count }
-    }
+    var count = 0
     
     /* Pointer to first node. */
     var first_ptr : Int?
