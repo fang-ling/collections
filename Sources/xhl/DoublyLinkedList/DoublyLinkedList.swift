@@ -9,7 +9,6 @@ import Foundation
 
 struct DoublyLinkedList<Element> {
     var buffer : [Node]
-    var unused : [Int]
     
     var count = 0
     
@@ -22,7 +21,6 @@ struct DoublyLinkedList<Element> {
     /* Constructs an empty list. */
     public init() {
         buffer = [Node]()
-        unused = [Int]()
         first_ptr = nil
         last_ptr = nil
     }

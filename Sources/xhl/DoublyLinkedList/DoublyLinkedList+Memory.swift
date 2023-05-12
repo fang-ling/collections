@@ -9,22 +9,29 @@ import Foundation
 
 extension DoublyLinkedList {
     mutating func malloc(_ node : Node) -> Int {
-        var index : Int
-        if unused.last != nil {
-            index = unused.removeLast()
-            buffer[index] = node
-        } else {
-            index = buffer.count
-            buffer.append(node)
-        }
+        let index = buffer.count
+        buffer.append(node)
         return index
     }
     
     mutating func free(_ index : Int) {
-        if index == buffer.count - 1 {
-            buffer.removeLast()
-        } else {
-            unused.append(index)
+        /* Exchange index with the last element of buffer and adjust pointers
+         * properly.
+         */
+        buffer.swapAt(index, buffer.endIndex - 1)
+        /* Don't forget to modify first and last pointers. */
+        if first_ptr == buffer.endIndex - 1 {
+            first_ptr = index
         }
+        if last_ptr == buffer.endIndex - 1 {
+            last_ptr = index
+        }
+        if let prev_ptr = buffer[index].prev {
+            buffer[prev_ptr].next = index
+        }
+        if let next_ptr = buffer[index].next {
+            buffer[next_ptr].prev = index
+        }
+        buffer.removeLast()
     }
 }

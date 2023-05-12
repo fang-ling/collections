@@ -83,6 +83,7 @@ extension DoublyLinkedList {
     }
     
     /* Unlinks non-null node x. */
+    @discardableResult
     mutating func unlink(_ x_ptr : Int?) -> Element {
         /// assert x_ptr != nil
         let element = buffer[x_ptr!].item

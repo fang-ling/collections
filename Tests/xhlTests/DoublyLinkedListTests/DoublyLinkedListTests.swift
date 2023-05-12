@@ -9,17 +9,34 @@ import XCTest
 @testable import xhl
 
 final class DoublyLinkedListTests : XCTestCase {
-    func test() {
+    func test_memory() {
         var ll = DoublyLinkedList<Int>()
+        
         ll.link_first(1)
         ll.link_first(2)
         ll.link_first(3)
         ll.link_first(4)
         ll.link_first(5)
-        var array = [Int]()
-        for _ in 0 ..< 5 {
-            array.append(ll.unlink_first())
-        }
-        XCTAssertEqual(array, [5, 4, 3, 2, 1])
+        /* List now looks like:
+         * 5 <---> 4 <---> 3 <---> 2 <---> 1
+         * Buffer looks like:
+         * [Node(item: 1, next: nil, prev: 1),     // index = 0
+         *  Node(item: 2, next: 0, prev: 2),       // index = 1
+         *  Node(item: 3, next: 1, prev: 3),       // index = 2
+         *  Node(item: 4, next: 2, prev: 4),       // index = 3
+         *  Node(item: 5, next: 3, prev: nil)]     // index = 4
+         */
+        
+        ll.unlink(2) /* Remove item = 3 */
+        /* List now looks like:
+         * 5 <---> 4 <---> 2 <---> 1
+         * Buffer looks like:
+         * [Node(item: 1, next: nil, prev: 1),     // index = 0
+         *  Node(item: 2, next: 0, prev: 3),       // index = 1
+         *  Node(item: 5, next: 3, prev: nil),     // index = 2
+         *  Node(item: 4, next: 1, prev: 2)]       // index = 3
+         */
+
+        XCTAssertEqual(ll.description, [5, 4, 2, 1].description)
     }
 }
