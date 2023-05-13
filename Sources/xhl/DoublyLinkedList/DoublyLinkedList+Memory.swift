@@ -18,13 +18,18 @@ extension DoublyLinkedList {
         /* Exchange index with the last element of buffer and adjust pointers
          * properly.
          */
-        buffer.swapAt(index, buffer.endIndex - 1)
+        let last_index = buffer.endIndex - 1
+        buffer.swapAt(index, last_index)
         /* Don't forget to modify first and last pointers. */
-        if first_ptr == buffer.endIndex - 1 {
+        if first_ptr == last_index {
             first_ptr = index
+        } else if first_ptr == index {
+            first_ptr = last_index
         }
-        if last_ptr == buffer.endIndex - 1 {
+        if last_ptr == last_index {
             last_ptr = index
+        } else if last_ptr == index {
+            last_ptr = last_index
         }
         if let prev_ptr = buffer[index].prev {
             buffer[prev_ptr].next = index
