@@ -19,9 +19,16 @@ struct DoublyLinkedList<Element> {
     var last_ptr : Int?
     
     /* Constructs an empty list. */
-    public init() {
+    @inlinable public init() {
         buffer = [Node]()
         first_ptr = nil
         last_ptr = nil
+    }
+    
+    @inlinable init(_ elements : [Element]) {
+        self.init()
+        for element in elements {
+            append(element)
+        }
     }
 }
