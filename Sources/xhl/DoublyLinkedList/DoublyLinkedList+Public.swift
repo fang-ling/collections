@@ -8,6 +8,39 @@
 import Foundation
 
 extension DoublyLinkedList {
+    /// The number of elements in the collection.
+    ///
+    /// To check whether a collection is empty, use its `isEmpty` property
+    /// instead of comparing `count` to zero.
+    ///
+    /// - Complexity: O(1)
+    @inlinable public var count : Int {
+        get {
+            buffer.count
+        }
+    }
+    
+    /// A Boolean value indicating whether the collection is empty.
+    ///
+    /// When you need to check whether your collection is empty, use the
+    /// `isEmpty` property instead of checking that the `count` property is
+    /// equal to zero.
+    ///
+    ///     let horseName = "Silver"
+    ///     if horseName.isEmpty {
+    ///         print("My horse has no name.")
+    ///     } else {
+    ///         print("Hi ho, \(horseName)!")
+    ///     }
+    ///     // Prints "Hi ho, Silver!")
+    ///
+    /// - Complexity: O(1)
+    @inlinable public var is_empty : Bool {
+        get {
+            buffer.isEmpty
+        }
+    }
+    
     /// The first element of the collection.
     ///
     /// If the collection is empty, the value of this property is `nil`.

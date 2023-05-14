@@ -67,4 +67,66 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.buffer.description, [].description)
         XCTAssertEqual(ll.description, [].description)
     }
+    
+    func test_expressible_by_array_literal() {
+        let ll : DoublyLinkedList<Int> = [1, 2, 3, 4]
+        XCTAssertEqual(ll.description, [1, 2, 3, 4].description)
+    }
+    
+    func test_description() {
+        XCTAssertEqual("\([] as DoublyLinkedList<Int>)", "[]")
+        XCTAssertEqual("\([1, 2, 3] as DoublyLinkedList<Int>)",
+                       "[1, 2, 3]")
+        XCTAssertEqual("\([1, 2, nil, 3] as DoublyLinkedList<Int?>)",
+                       "[Optional(1), Optional(2), nil, Optional(3)]")
+    }
+    
+    func test_is_empty() {
+        var ll = DoublyLinkedList<Int>()
+        XCTAssertTrue(ll.is_empty)
+
+        ll.prepend(42)
+        XCTAssertFalse(ll.is_empty)
+
+        ll.remove_first()
+        XCTAssertTrue(ll.is_empty)
+    }
+    
+    func test_count() {
+        var ll = DoublyLinkedList<Int>()
+        XCTAssertEqual(ll.count, 0)
+
+        ll.prepend(20)
+        XCTAssertEqual(ll.count, 1)
+
+        ll.prepend(40)
+        XCTAssertEqual(ll.count, 2)
+
+        ll.remove_first()
+        XCTAssertEqual(ll.count, 1)
+    }
+    
+    func test_prepend() {
+        var ll = DoublyLinkedList<String>()
+
+        XCTAssertEqual(ll.count, 0)
+        ll.prepend("Ssu-yen")
+        XCTAssertEqual(ll.count, 1)
+        XCTAssertEqual(ll.first, "Ssu-yen")
+        ll.prepend("Tzu-han")
+        XCTAssertEqual(ll.count, 2)
+        XCTAssertEqual(ll.first, "Tzu-han")
+    }
+    
+    func test_append() {
+        var ll = DoublyLinkedList<String>()
+        
+        XCTAssertEqual(ll.count, 0)
+        ll.append("Ya-hsüan")
+        XCTAssertEqual(ll.count, 1)
+        XCTAssertEqual(ll.last, "Ya-hsüan")
+        ll.append("Fang-ling")
+        XCTAssertEqual(ll.count, 2)
+        XCTAssertEqual(ll.last, "Fang-ling")
+    }
 }

@@ -10,8 +10,6 @@ import Foundation
 struct DoublyLinkedList<Element> {
     var buffer : [Node]
     
-    var count = 0
-    
     /* Pointer to first node. */
     var first_ptr : Int?
     

@@ -9,7 +9,7 @@ import Foundation
 
 extension DoublyLinkedList {
     /* Links e as first element. */
-    mutating func link_first(_ e : Element) {
+    @inlinable mutating func link_first(_ e : Element) {
         let f = first_ptr
         let new_node_ptr = malloc(Node(prev: nil, item: e, next: f))
         first_ptr = new_node_ptr
@@ -18,11 +18,11 @@ extension DoublyLinkedList {
         } else {
             buffer[f!].prev = new_node_ptr
         }
-        count += 1
+//        count += 1
     }
     
     /* Links e as last element. */
-    mutating func link_last(_ e : Element) {
+    @inlinable mutating func link_last(_ e : Element) {
         let l = last_ptr
         let new_node_ptr = malloc(Node(prev: l, item: e, next: nil))
         last_ptr = new_node_ptr
@@ -31,10 +31,11 @@ extension DoublyLinkedList {
         } else {
             buffer[l!].next = new_node_ptr
         }
-        count += 1
+//        count += 1
     }
     
     /* Inserts element e before non-nil Node successor. */
+    @inlinable
     mutating func link_before(_ e : Element, _ successor_ptr : Int?) {
         /* assert successor != nil */
         let predecessor_ptr = buffer[successor_ptr!].prev
@@ -47,12 +48,12 @@ extension DoublyLinkedList {
         } else {
             buffer[predecessor_ptr!].next = new_node_ptr
         }
-        count += 1
+//        count += 1
     }
     
     /* Unlinks non-null first node. */
     @discardableResult
-    mutating func unlink_first(_ f_ptr : Int?) -> Element {
+    @inlinable mutating func unlink_first(_ f_ptr : Int?) -> Element {
         /* assert f == first_ptr && f_ptr != nil */
         let element = buffer[f_ptr!].item
         let next_ptr = buffer[f_ptr!].next
@@ -64,13 +65,13 @@ extension DoublyLinkedList {
         }
         
         free(f_ptr!) /* f.prev == nil */
-        count -= 1
+//        count -= 1
         return element
     }
     
     /* Unlinks non-null last node. */
     @discardableResult
-    mutating func unlink_last(_ l_ptr : Int?) -> Element {
+    @inlinable mutating func unlink_last(_ l_ptr : Int?) -> Element {
         /* assert l_ptr == last_ptr && l_ptr != nil */
         let element = buffer[l_ptr!].item
         let prev_ptr = buffer[l_ptr!].prev
@@ -82,13 +83,13 @@ extension DoublyLinkedList {
         }
         
         free(l_ptr!)
-        count -= 1
+//        count -= 1
         return element
     }
     
     /* Unlinks non-null node x. */
     @discardableResult
-    mutating func unlink(_ x_ptr : Int?) -> Element {
+    @inlinable mutating func unlink(_ x_ptr : Int?) -> Element {
         /* assert x_ptr != nil */
         let element = buffer[x_ptr!].item
         let next_ptr = buffer[x_ptr!].next
@@ -107,7 +108,7 @@ extension DoublyLinkedList {
         }
         
         free(x_ptr!)
-        count -= 1
+//        count -= 1
         return element
     }
 }

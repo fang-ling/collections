@@ -8,13 +8,13 @@
 import Foundation
 
 extension DoublyLinkedList {
-    mutating func malloc(_ node : Node) -> Int {
+    @inlinable mutating func malloc(_ node : Node) -> Int {
         let index = buffer.count
         buffer.append(node)
         return index
     }
     
-    mutating func free(_ index : Int) {
+    @inlinable mutating func free(_ index : Int) {
         /* Exchange index with the last element of buffer and adjust pointers
          * properly.
          */
