@@ -8,12 +8,13 @@
 import Foundation
 
 extension DoublyLinkedList {
+    @usableFromInline
     struct Node {
-        var item : Element
-        var next : Int?
-        var prev : Int?
+        @usableFromInline var item : Element
+        @usableFromInline var next : Int?
+        @usableFromInline var prev : Int?
         
-        init(prev: Int?, item: Element, next: Int?) {
+        @inlinable init(prev: Int?, item: Element, next: Int?) {
             self.item = item
             self.next = next
             self.prev = prev
