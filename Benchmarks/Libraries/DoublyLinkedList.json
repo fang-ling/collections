@@ -1,0 +1,23 @@
+{
+    "kind": "group",
+    "title": "DoublyLinkedList Benchmarks",
+    "directory": "DoublyLinkedList",
+    "contents": [
+        {
+            "kind": "group",
+            "title": "DoublyLinkedList vs Swift Deque",
+            "contents": [
+                {
+                    "kind": "chart",
+                    "title": "insert",
+                    "tasks": [
+                        "DoublyLinkedList<Int> append",
+                        "DoublyLinkedList<Int> prepend",
+                        "Swift.Deque<Int> append",
+                        "Swift.Deque<Int> prepend"
+                    ]
+                }
+            ]
+        }
+    ]
+}

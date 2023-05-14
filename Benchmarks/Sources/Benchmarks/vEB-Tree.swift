@@ -6,7 +6,7 @@
 //
 
 import CollectionsBenchmark
-import XHL
+import xhl
 import Foundation
 
 extension Int {

@@ -9,8 +9,8 @@ let package = Package(
                  from: "0.0.3"),
         .package(url: "https://github.com/apple/swift-collections",
                  branch: "release/1.1"),
-        .package(url: "https://github.com/fang-ling/c-collections",
-                 branch: "move-to-swift")
+        .package(url: "https://github.com/fang-ling/collections",
+                 from: "0.0.1-beta.2")
     ],
     targets: [
         .executableTarget(
@@ -20,8 +20,8 @@ let package = Package(
                          package: "swift-collections-benchmark"),
                 .product(name: "Collections",
                          package: "swift-collections"),
-                .product(name: "XHL",
-                         package: "c-collections")
+                .product(name: "xhl",
+                         package: "collections")
             ]),
         .testTarget(
             name: "BenchmarksTests",

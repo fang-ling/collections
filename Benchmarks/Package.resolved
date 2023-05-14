@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "c-collections",
+      "identity" : "collections",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/fang-ling/c-collections",
+      "location" : "https://github.com/fang-ling/collections",
       "state" : {
-        "branch" : "move-to-swift",
-        "revision" : "c34a5d9ece262d10998ea6fdd90feb8f28a63a45"
+        "revision" : "440b997f7f730e7375e06e5b8bb0045e6d6d3942",
+        "version" : "0.0.1-beta.2"
       }
     },
     {
