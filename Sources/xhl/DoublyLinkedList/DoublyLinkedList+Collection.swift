@@ -18,7 +18,6 @@ extension DoublyLinkedList {
         } else {
             buffer[f!].prev = new_node_ptr
         }
-//        count += 1
     }
     
     /* Links e as last element. */
@@ -31,7 +30,6 @@ extension DoublyLinkedList {
         } else {
             buffer[l!].next = new_node_ptr
         }
-//        count += 1
     }
     
     /* Inserts element e before non-nil Node successor. */
@@ -48,7 +46,6 @@ extension DoublyLinkedList {
         } else {
             buffer[predecessor_ptr!].next = new_node_ptr
         }
-//        count += 1
     }
     
     /* Unlinks non-null first node. */
@@ -57,15 +54,15 @@ extension DoublyLinkedList {
         /* assert f == first_ptr && f_ptr != nil */
         let element = buffer[f_ptr!].item
         let next_ptr = buffer[f_ptr!].next
+        buffer[f_ptr!].next = nil /* Help GC */
         first_ptr = next_ptr
         if next_ptr == nil {
             last_ptr = nil
-        } else if next_ptr! < buffer.endIndex {
+        } else {
             buffer[next_ptr!].prev = nil
         }
         
         free(f_ptr!) /* f.prev == nil */
-//        count -= 1
         return element
     }
     
@@ -75,6 +72,7 @@ extension DoublyLinkedList {
         /* assert l_ptr == last_ptr && l_ptr != nil */
         let element = buffer[l_ptr!].item
         let prev_ptr = buffer[l_ptr!].prev
+        buffer[l_ptr!].prev = nil /* Help GC */
         last_ptr = prev_ptr
         if prev_ptr == nil {
             first_ptr = nil
@@ -83,7 +81,6 @@ extension DoublyLinkedList {
         }
         
         free(l_ptr!)
-//        count -= 1
         return element
     }
     
@@ -99,16 +96,17 @@ extension DoublyLinkedList {
             first_ptr = next_ptr
         } else {
             buffer[prev_ptr!].next = next_ptr
+            buffer[x_ptr!].prev = nil /* Help GC */
         }
         
         if next_ptr == nil {
             last_ptr = prev_ptr
         } else {
             buffer[next_ptr!].prev = prev_ptr
+            buffer[x_ptr!].next = nil /* Help GC */
         }
         
         free(x_ptr!)
-//        count -= 1
         return element
     }
 }

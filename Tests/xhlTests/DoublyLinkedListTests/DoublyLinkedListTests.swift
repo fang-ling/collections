@@ -129,4 +129,34 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.count, 2)
         XCTAssertEqual(ll.last, "Fang-ling")
     }
+    
+    func test_remove_first() {
+        var ll : DoublyLinkedList<String> = ["Ssu-yen",
+                                             "Tzu-han",
+                                             "Ya-hsüan",
+                                             "Fang-ling"]
+        XCTAssertEqual(ll.remove_first(), "Ssu-yen")
+        XCTAssertEqual(ll.count, 3)
+        XCTAssertEqual(ll.remove_first(), "Tzu-han")
+        XCTAssertEqual(ll.count, 2)
+        XCTAssertEqual(ll.remove_first(), "Ya-hsüan")
+        XCTAssertEqual(ll.count, 1)
+        XCTAssertEqual(ll.remove_last(), "Fang-ling")
+        XCTAssertEqual(ll.count, 0)
+    }
+    
+    func test_remove_last() {
+        var ll : DoublyLinkedList<String> = ["Ssu-yen",
+                                             "Tzu-han",
+                                             "Ya-hsüan",
+                                             "Fang-ling"]
+        XCTAssertEqual(ll.remove_last(), "Fang-ling")
+        XCTAssertEqual(ll.count, 3)
+        XCTAssertEqual(ll.remove_last(), "Ya-hsüan")
+        XCTAssertEqual(ll.count, 2)
+        XCTAssertEqual(ll.remove_last(), "Tzu-han")
+        XCTAssertEqual(ll.count, 1)
+        XCTAssertEqual(ll.remove_first(), "Ssu-yen")
+        XCTAssertEqual(ll.count, 0)
+    }
 }
