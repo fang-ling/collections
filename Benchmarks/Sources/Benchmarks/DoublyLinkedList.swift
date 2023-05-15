@@ -32,5 +32,43 @@ extension Benchmark {
             }
             blackHole(ll)
         }
+        
+        self.add(
+            title: "DoublyLinkedList<Int> remove_last",
+            input: Int.self
+        ) { size in
+            return { timer in
+                var ll = DoublyLinkedList<Int>()
+                for i in 0 ..< size {
+                    ll.append(i)
+                }
+                timer.measure {
+                    for _ in 0 ..< size {
+                        ll.remove_last()
+                    }
+                }
+                precondition(ll.is_empty)
+                blackHole(ll)
+            }
+        }
+        
+        self.add(
+            title: "DoublyLinkedList<Int> remove_first",
+            input: Int.self
+        ) { size in
+            return { timer in
+                var ll = DoublyLinkedList<Int>()
+                for i in 0 ..< size {
+                    ll.append(i)
+                }
+                timer.measure {
+                    for _ in 0 ..< size {
+                        ll.remove_first()
+                    }
+                }
+                precondition(ll.is_empty)
+                blackHole(ll)
+            }
+        }
     }
 }

@@ -32,5 +32,37 @@ extension Benchmark {
             }
             blackHole(deque)
         }
+        
+        self.add(
+            title: "Swift.Deque<Int> removeLast",
+            input: Int.self
+        ) { size in
+            return { timer in
+                var deque = Deque(Array(0 ..< size))
+                timer.measure {
+                    for _ in 0 ..< size {
+                        deque.removeLast()
+                    }
+                }
+                precondition(deque.isEmpty)
+                blackHole(deque)
+            }
+        }
+        
+        self.add(
+            title: "Swift.Deque<Int> removeFirst",
+            input: Int.self
+        ) { size in
+            return { timer in
+                var deque = Deque(Array(0 ..< size))
+                timer.measure {
+                    for _ in 0 ..< size {
+                        deque.removeFirst()
+                    }
+                }
+                precondition(deque.isEmpty)
+                blackHole(deque)
+            }
+        }
     }
 }

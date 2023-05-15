@@ -9,12 +9,16 @@
             "contents": [
                 {
                     "kind": "chart",
-                    "title": "insert",
+                    "title": "insert & remove",
                     "tasks": [
                         "DoublyLinkedList<Int> append",
                         "DoublyLinkedList<Int> prepend",
                         "Swift.Deque<Int> append",
-                        "Swift.Deque<Int> prepend"
+                        "Swift.Deque<Int> prepend",
+                        "DoublyLinkedList<Int> remove_first",
+                        "DoublyLinkedList<Int> remove_last",
+                        "Swift.Deque<Int> removeFirst",
+                        "Swift.Deque<Int> removeLast"
                     ]
                 }
             ]

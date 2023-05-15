@@ -10,7 +10,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections",
                  branch: "release/1.1"),
         .package(url: "https://github.com/fang-ling/collections",
-                 from: "0.0.1-beta.2")
+                 from: "0.0.1-beta.3")
     ],
     targets: [
         .executableTarget(
