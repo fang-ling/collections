@@ -159,4 +159,19 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.remove_first(), "Ssu-yen")
         XCTAssertEqual(ll.count, 0)
     }
+    
+    func test_cow() {
+        func address(_ object: UnsafeRawPointer) -> String {
+            let address = Int(bitPattern: object)
+            return String(format: "%p", address)
+        }
+        
+        var ll = DoublyLinkedList<Int>()
+        ll.append(19358)
+        var ll2 = ll
+        var ll3 = DoublyLinkedList<Int>()
+        ll3.append(19358)
+        XCTAssertEqual(address(&ll.buffer), address(&ll2.buffer))
+        XCTAssertNotEqual(address(&ll.buffer), address(&ll3.buffer))
+    }
 }
