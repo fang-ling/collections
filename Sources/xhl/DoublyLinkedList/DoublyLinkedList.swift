@@ -9,7 +9,7 @@ import Foundation
 
 @frozen
 public struct DoublyLinkedList<Element> {
-    @usableFromInline var buffer : [Node]
+    @usableFromInline var buffer : [Node<Element>]
     
     /* Pointer to first node. */
     @usableFromInline var first_ptr : Int?
@@ -20,7 +20,7 @@ public struct DoublyLinkedList<Element> {
     /* Constructs an empty list. */
     @inlinable
     public init() {
-        buffer = [Node]()
+        buffer = [Node<Element>]()
         first_ptr = nil
         last_ptr = nil
     }

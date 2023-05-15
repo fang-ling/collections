@@ -14,10 +14,9 @@ extension DoublyLinkedList {
     /// instead of comparing `count` to zero.
     ///
     /// - Complexity: O(1)
-    @inlinable public var count : Int {
-        get {
-            buffer.count
-        }
+    @inlinable @inline(__always)
+    public var count : Int {
+        buffer.count
     }
     
     /// A Boolean value indicating whether the collection is empty.
@@ -35,10 +34,9 @@ extension DoublyLinkedList {
     ///     // Prints "Hi ho, Silver!")
     ///
     /// - Complexity: O(1)
-    @inlinable public var is_empty : Bool {
-        get {
-            buffer.isEmpty
-        }
+    @inlinable @inline(__always)
+    public var is_empty : Bool {
+        buffer.isEmpty
     }
     
     /// The first element of the collection.
@@ -94,7 +92,7 @@ extension DoublyLinkedList {
     /// - Complexity: O(1)
     @discardableResult
     @inlinable public mutating func remove_first() -> Element {
-        precondition(first_ptr != nil,
+        precondition(!is_empty,
                      "Can't remove items from an empty collection")
         return unlink_first(first_ptr!)
     }
@@ -116,7 +114,7 @@ extension DoublyLinkedList {
     /// - Complexity: O(1)
     @discardableResult
     @inlinable public mutating func remove_last() -> Element {
-        precondition(last_ptr != nil,
+        precondition(!is_empty,
                      "Can't remove items from an empty collection")
         return unlink_last(last_ptr!)
     }
