@@ -22,4 +22,16 @@ final class StackTests : XCTestCase {
         }
         XCTAssertEqual(array.reversed(), result)
     }
+    
+    func test_cow() {
+        func address(_ object: UnsafeRawPointer) -> String {
+            let address = Int(bitPattern: object)
+            return String(format: "%p", address)
+        }
+        
+        var stack = Stack<Int>()
+        stack.push(2)
+        var copyed = stack
+        XCTAssertEqual(address(&stack.buffer), address(&copyed.buffer))
+    }
 }
