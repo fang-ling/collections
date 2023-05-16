@@ -31,7 +31,7 @@ final class StackTests : XCTestCase {
         
         var stack = Stack<Int>()
         stack.push(2)
-        var copyed = stack
-        XCTAssertEqual(address(&stack.buffer), address(&copyed.buffer))
+        var copied = stack
+        XCTAssertEqual(address(&stack.buffer), address(&copied.buffer))
     }
 }
