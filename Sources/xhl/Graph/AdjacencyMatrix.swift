@@ -26,7 +26,7 @@ public struct AdjacencyMatrix {
         matrix[u][v] = weight
     }
 
-    public func has_edge(u : Int, v : Int) -> Bool {
+    public func contains(u : Int, v : Int) -> Bool {
         return matrix[u][v] != 0
     }
 
