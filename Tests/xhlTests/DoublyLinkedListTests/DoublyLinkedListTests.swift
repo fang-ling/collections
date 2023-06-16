@@ -1,6 +1,6 @@
 //
 //  DoublyLinkedListTests.swift
-//  
+//
 //
 //  Created by Fang Ling on 2023/5/8.
 //
@@ -11,7 +11,7 @@ import XCTest
 final class DoublyLinkedListTests : XCTestCase {
     func test_memory() {
         var ll = DoublyLinkedList<Int>()
-        
+
         ll.link_first(1)
         ll.link_first(2)
         ll.link_first(3)
@@ -53,26 +53,26 @@ final class DoublyLinkedListTests : XCTestCase {
          * [Node(item: 4, next: 1, prev: nil),     // index = 0
          *  Node(item: 2, next: nil, prev: 0)]     // index = 1
          */
-        
+
         ll.unlink_first(ll.first_ptr) /* Remove item = 4 */
         /* List now looks like:
          * 2
          * Buffer looks like:
          * [Node(item: 2, next: nil, prev: nil)]   // index = 0
          */
-        
+
         ll.unlink_first(ll.first_ptr) /* Remove item = 2 */
         /* List & buffer are empty now. */
 
-        XCTAssertEqual(ll.buffer.description, [].description)
-        XCTAssertEqual(ll.description, [].description)
+        XCTAssertEqual(ll.buffer.description, [Int]().description)
+        XCTAssertEqual(ll.description, [Int]().description)
     }
-    
+
     func test_expressible_by_array_literal() {
         let ll : DoublyLinkedList<Int> = [1, 2, 3, 4]
         XCTAssertEqual(ll.description, [1, 2, 3, 4].description)
     }
-    
+
     func test_description() {
         XCTAssertEqual("\([] as DoublyLinkedList<Int>)", "[]")
         XCTAssertEqual("\([1, 2, 3] as DoublyLinkedList<Int>)",
@@ -80,7 +80,7 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual("\([1, 2, nil, 3] as DoublyLinkedList<Int?>)",
                        "[Optional(1), Optional(2), nil, Optional(3)]")
     }
-    
+
     func test_is_empty() {
         var ll = DoublyLinkedList<Int>()
         XCTAssertTrue(ll.is_empty)
@@ -91,7 +91,7 @@ final class DoublyLinkedListTests : XCTestCase {
         ll.remove_first()
         XCTAssertTrue(ll.is_empty)
     }
-    
+
     func test_count() {
         var ll = DoublyLinkedList<Int>()
         XCTAssertEqual(ll.count, 0)
@@ -105,7 +105,7 @@ final class DoublyLinkedListTests : XCTestCase {
         ll.remove_first()
         XCTAssertEqual(ll.count, 1)
     }
-    
+
     func test_prepend() {
         var ll = DoublyLinkedList<String>()
 
@@ -117,10 +117,10 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.count, 2)
         XCTAssertEqual(ll.first, "Tzu-han")
     }
-    
+
     func test_append() {
         var ll = DoublyLinkedList<String>()
-        
+
         XCTAssertEqual(ll.count, 0)
         ll.append("Ya-hsüan")
         XCTAssertEqual(ll.count, 1)
@@ -129,7 +129,7 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.count, 2)
         XCTAssertEqual(ll.last, "Fang-ling")
     }
-    
+
     func test_remove_first() {
         var ll : DoublyLinkedList<String> = ["Ssu-yen",
                                              "Tzu-han",
@@ -144,7 +144,7 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.remove_last(), "Fang-ling")
         XCTAssertEqual(ll.count, 0)
     }
-    
+
     func test_remove_last() {
         var ll : DoublyLinkedList<String> = ["Ssu-yen",
                                              "Tzu-han",
@@ -159,13 +159,13 @@ final class DoublyLinkedListTests : XCTestCase {
         XCTAssertEqual(ll.remove_first(), "Ssu-yen")
         XCTAssertEqual(ll.count, 0)
     }
-    
+
     func test_cow() {
         func address(_ object: UnsafeRawPointer) -> String {
             let address = Int(bitPattern: object)
             return String(format: "%p", address)
         }
-        
+
         var ll = DoublyLinkedList<Int>()
         ll.append(19358)
         var ll2 = ll
