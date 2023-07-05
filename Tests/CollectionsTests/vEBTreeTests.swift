@@ -1,12 +1,12 @@
 //
 //  vEBTreeTests.swift
-//  
+//
 //
 //  Created by Fang Ling on 2023/3/16.
 //
 
 import XCTest
-@testable import xhl
+@testable import Collections
 
 extension vEBTree {
     /* Removes all the element in ascending order */
@@ -25,33 +25,33 @@ final class vEBTreeTests: XCTestCase {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.is_empty, true)
         XCTAssertEqual(tree.isEmpty, true)
-        
+
         tree.insert(19358)
         XCTAssertEqual(tree.is_empty, false)
         XCTAssertEqual(tree.isEmpty, false)
-        
+
         tree.remove(19358)
         XCTAssertEqual(tree.is_empty, true)
         XCTAssertEqual(tree.isEmpty, true)
     }
-    
+
     func test_count() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.count, 0)
-        
+
         tree.insert(19358)
         XCTAssertEqual(tree.count, 1)
         tree.insert(19358)
         XCTAssertEqual(tree.count, 2)
         tree.insert(12321)
         XCTAssertEqual(tree.count, 3)
-        
+
         tree.remove(19358)
         XCTAssertEqual(tree.count, 2)
         tree.remove(19358)
         XCTAssertEqual(tree.count, 1)
     }
-    
+
     func test_insert_random() {
         let c = 128
         var rng = SystemRandomNumberGenerator()
@@ -66,41 +66,41 @@ final class vEBTreeTests: XCTestCase {
         }
         XCTAssertEqual(tree.items_in_ascending_order(), [Int](0 ..< c))
     }
-    
+
     func test_min() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.min, nil)
-        
+
         tree.insert(5)
         XCTAssertEqual(tree.min!, 5)
-        
+
         tree.insert(12)
         XCTAssertEqual(tree.min!, 5)
-        
+
         tree.insert(2)
         XCTAssertEqual(tree.min!, 2)
-        
+
         tree.insert(1)
         XCTAssertEqual(tree.min!, 1)
     }
-    
+
     func test_max() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.max, nil)
-        
+
         tree.insert(42)
         XCTAssertEqual(tree.max!, 42)
-        
+
         tree.insert(20)
         XCTAssertEqual(tree.max!, 42)
-        
+
         tree.insert(63)
         XCTAssertEqual(tree.max!, 63)
-        
+
         tree.insert(90)
         XCTAssertEqual(tree.max!, 90)
     }
-    
+
     func test_remove_min() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.min, nil)
@@ -176,7 +176,7 @@ final class vEBTreeTests: XCTestCase {
 
         XCTAssertEqual(tree.min, nil)
     }
-    
+
     func test_remove_max() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.max, nil)
@@ -249,20 +249,20 @@ final class vEBTreeTests: XCTestCase {
         // One 1 was still in the tree from before
         XCTAssertEqual(tree.max, 1)
         tree.remove(tree.max!)
-        
+
         XCTAssertEqual(tree.max, nil)
     }
-    
+
     func test_remove_random() {
         let c = 256
         let tree = vEBTree(u: 1 << 20)
-        
+
         for _ in 0 ..< c {
             for j in (0 ..< c).shuffled() {
                 tree.insert(j)
             }
         }
-        
+
         var i = c * c
         for _ in 0 ..< c {
             for j in (0 ..< c).shuffled() {
@@ -275,54 +275,54 @@ final class vEBTreeTests: XCTestCase {
         XCTAssertEqual(tree.count, 0)
         XCTAssertEqual(tree.items_in_ascending_order(), [])
     }
-    
+
     func test_predecessor() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertEqual(tree.predecessor(0), nil)
         XCTAssertEqual(tree.predecessor(19358), nil)
-        
+
         tree.insert(19358)
         XCTAssertEqual(tree.predecessor(19358), nil)
-        
+
         tree.insert(19358)
         XCTAssertEqual(tree.predecessor(19358), nil)
-        
+
         tree.insert(1)
         XCTAssertEqual(tree.predecessor(19358), 1)
-        
+
         tree.insert(12321)
         XCTAssertEqual(tree.predecessor(19358), 12321)
-        
+
         XCTAssertEqual(tree.predecessor(1), nil)
     }
-    
+
     func test_successor() {
         let tree = vEBTree(u: 1 << 20)
         /* Expect fatal error */
         //_ = tree.predecessor(1 << 20)
-        
+
         XCTAssertEqual(tree.successor(0), nil)
-        
+
         tree.insert(19358)
         XCTAssertEqual(tree.successor(12321), 19358)
-        
+
         tree.insert(12321)
         XCTAssertEqual(tree.successor(12361), 19358)
-        
+
         XCTAssertEqual(tree.successor(12308), 12321)
     }
-    
+
     func test_contains() {
         let tree = vEBTree(u: 1 << 20)
         XCTAssertFalse(tree.contains(19358))
         XCTAssertFalse(tree.contains(1 << 21))
-        
+
         tree.insert(19358)
         XCTAssertTrue(tree.contains(19358))
-        
+
         tree.insert(12321)
         XCTAssertTrue(tree.contains(12321))
-        
+
         tree.remove(19358)
         XCTAssertFalse(tree.contains(19358))
     }

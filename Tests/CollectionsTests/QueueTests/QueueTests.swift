@@ -1,6 +1,6 @@
 //
 //  QueueTests.swift
-//  
+//
 //
 //  Created by Fang Ling on 2023/5/16.
 //
@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-@testable import xhl
+@testable import Collections
 
 final class QueueTests : XCTestCase {
     func test_queue() {
@@ -21,7 +21,7 @@ final class QueueTests : XCTestCase {
         XCTAssertEqual(queue.dequeue(), "Ssu-yen")
         XCTAssertEqual(queue.front, "Fang-ling")
         queue.dequeue()
-        
+
         let array = ["Ya-hsüan", "Yüan-yüeh", "Tzh-han", "Hsüeh-min"]
         for i in array {
             queue.enqueue(i)
@@ -34,13 +34,13 @@ final class QueueTests : XCTestCase {
         XCTAssertEqual(queue.count, 0)
         XCTAssertTrue(queue.is_empty)
     }
-    
+
     func test_cow() {
         func address(_ object: UnsafeRawPointer) -> String {
             let address = Int(bitPattern: object)
             return String(format: "%p", address)
         }
-        
+
         var queue = Queue<String>()
         queue.enqueue("Yüan-yüeh")
         var copied = queue

@@ -1,5 +1,12 @@
+//
+//  UnionFindSetTests.swift
+//
+//
+//  Created by Fang Ling on 2023/7/5.
+//
+
 import XCTest
-@testable import xhl
+@testable import Collections
 
 final class UnionFindSetTests: XCTestCase {
     func test_example() {

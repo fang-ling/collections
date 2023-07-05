@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import xhl
+@testable import Collections
 
 final class DoublyLinkedListTests : XCTestCase {
     func test_memory() {
