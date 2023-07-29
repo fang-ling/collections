@@ -7,39 +7,35 @@
 
 import Foundation
 
-public struct AdjacencyEdge {
+public struct AdjacencyEdge : Equatable {
     public var v : Int
     public var weight : Int
 }
 
 public struct AdjacencyList {
     /* Number of vertices in this graph */
-    public private(set) var count : Int
-    /* Boolean whether or not graph is directed */
-    public private(set) var is_directed : Bool
-    var adj_lists : [[AdjacencyEdge]]
+    public var count : Int
+    var adj : [[AdjacencyEdge]]
 
-    public init(count : Int, is_directed : Bool) {
+    public init(count : Int) {
         self.count = count
-        self.is_directed = is_directed
-        adj_lists = [[AdjacencyEdge]](repeating: [AdjacencyEdge](),
-                                      count: count)
+        adj = [[AdjacencyEdge]](
+          repeating: [AdjacencyEdge](),
+          count: count
+        )
     }
 
     public func get_adj_list(u : Int) -> [AdjacencyEdge] {
-        return adj_lists[u]
+        return adj[u]
     }
 
     public mutating func insert_edge(u : Int, v : Int, weight : Int = 1) {
-        if !is_directed {
-            adj_lists[v].append(AdjacencyEdge(v: u, weight: weight))
-        }
-        adj_lists[u].append(AdjacencyEdge(v: v, weight: weight))
+        adj[u].append(AdjacencyEdge(v: v, weight: weight))
     }
 
     /* O(n) time */
     public mutating func contains(u : Int, v : Int) -> Bool {
-        for e in adj_lists[u] {
+        for e in adj[u] {
             if e.v == v {
                 return true
             }

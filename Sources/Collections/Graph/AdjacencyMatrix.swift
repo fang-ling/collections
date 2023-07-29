@@ -7,22 +7,18 @@
 
 public struct AdjacencyMatrix {
     /* Number of vertices in this graph */
-    public private(set) var count : Int
-    /* Boolean whether or not graph is directed */
-    public private(set) var is_directed : Bool
+    public var count : Int
     var matrix : [[Int]]
 
-    public init(count : Int, is_directed : Bool) {
+    public init(count : Int) {
         self.count = count
-        self.is_directed = is_directed
-        matrix = [[Int]](repeating: [Int](repeating: 0, count: count),
-                         count: count)
+        matrix = [[Int]](
+          repeating: [Int](repeating: 0, count: count),
+          count: count
+        )
     }
 
     public mutating func insert_edge(u : Int, v : Int, weight : Int = 1) {
-        if !is_directed {
-            matrix[v][u] = weight
-        }
         matrix[u][v] = weight
     }
 
@@ -31,9 +27,6 @@ public struct AdjacencyMatrix {
     }
 
     public mutating func remove_edge(u : Int, v : Int) {
-        if !is_directed {
-            matrix[v][u] = 0
-        }
         matrix[u][v] = 0
     }
 
