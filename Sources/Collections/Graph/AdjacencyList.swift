@@ -15,7 +15,7 @@ public struct AdjacencyEdge : Equatable {
 public struct AdjacencyList {
     /* Number of vertices in this graph */
     public var count : Int
-    var adj : [[AdjacencyEdge]]
+    public var adj : [[AdjacencyEdge]]
 
     public init(count : Int) {
         self.count = count
@@ -23,10 +23,6 @@ public struct AdjacencyList {
           repeating: [AdjacencyEdge](),
           count: count
         )
-    }
-
-    public func get_adj_list(u : Int) -> [AdjacencyEdge] {
-        return adj[u]
     }
 
     public mutating func insert_edge(u : Int, v : Int, weight : Int = 1) {
