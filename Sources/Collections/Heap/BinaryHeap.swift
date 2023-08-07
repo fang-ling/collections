@@ -42,10 +42,10 @@ public struct BinaryHeap<Element : Comparable> {
 func bh_parent(_ i : Int) -> Int { return (i - 1) / 2 }
 
 @inlinable
-func bh_left(_ i : Int) -> Int { return i * 2 + 1 }
+func bh_left(_ i : Int) -> Int { return 2 * i + 1 }
 
 @inlinable
-func bh_right(_ i : Int) -> Int { return i * 2 + 2 }
+func bh_right(_ i : Int) -> Int { return 2 * i + 2 }
 
 
 //----------------------------------------------------------------------------//
@@ -53,7 +53,7 @@ func bh_right(_ i : Int) -> Int { return i * 2 + 2 }
 //----------------------------------------------------------------------------//
 extension BinaryHeap {
     ///Maintain the max heap property from node i all the way up to root.
-    @inlinable
+//    @inlinable
     mutating func max_heapify_up(_ i : Int) {
         if i == 0 { /* We are at root node now. */
             return
@@ -69,8 +69,11 @@ extension BinaryHeap {
     }
 
     ///Maintain the max heap property from node i all the way down to leaf.
-    @inlinable
+//    @inlinable
     mutating func max_heapify_down(_ i : Int) {
+        if i >= count / 2 { /* No children, we are done */
+            return
+        }
         var j = 0
         /* Find i's largest children j. */
         if bh_left(i) < count && bh_right(i) < count { /* Both children exist */
@@ -82,16 +85,56 @@ extension BinaryHeap {
             j = bh_left(i)
         } else if bh_left(i) >= count && bh_right(i) < count { /* Right only */
             j = bh_right(i)
-        } else { /* No children, we are done */
+        } else {
+            print("error")
             return
         }
         /*
          * If i is smaller than j (i's largest child), we are violate the max
          * heap property. Fix it by swap i.key with j.key and then recur on j.
          */
-        if _storage[j] > _storage[i] {
+        if _storage[i] < _storage[j] {
             _storage.swapAt(i, j)
             max_heapify_down(j)
         }
+    }
+}
+
+//----------------------------------------------------------------------------//
+//                         Lookup                                             //
+//----------------------------------------------------------------------------//
+extension BinaryHeap {
+    /// Returns the largest element in a heap in constant time.
+    @inlinable
+    public var max : Element? {
+        return _storage.first
+    }
+}
+
+//----------------------------------------------------------------------------//
+//                         Insertion                                          //
+//----------------------------------------------------------------------------//
+extension BinaryHeap {
+    /// Inserts a new item into heap.
+//    @inlinable
+    public mutating func insert(_ new_element : Element) {
+        _storage.append(new_element)
+        max_heapify_up(count - 1)
+    }
+}
+
+//----------------------------------------------------------------------------//
+//                         Removal                                            //
+//----------------------------------------------------------------------------//
+extension BinaryHeap {
+    /// Removes the max item in the heap.
+//    @inlinable
+    @discardableResult
+    public mutating func remove_max() -> Element {
+        _storage.swapAt(0, count - 1)
+        /* It's necessary to first do remove to update `count` */
+        let r = _storage.removeLast()
+        max_heapify_down(0)
+        return r
     }
 }
