@@ -4,7 +4,7 @@
 //
 //  Created by Fang Ling on 2023/8/7.
 //
-
+import Foundation
 import XCTest
 @testable import Collections
 
@@ -67,7 +67,7 @@ final class BinaryHeapTests : XCTestCase {
         heap.insert(19358)
         XCTAssertEqual(heap.max, 19358)
     }
-
+    
     func test_remove() {
         var heap = BinaryHeap<Int>()
 
@@ -82,42 +82,39 @@ final class BinaryHeapTests : XCTestCase {
         heap.insert(1)
         heap.insert(4)
         XCTAssertEqual(heap.remove_max(), 13)
-        heap.remove_max()
-        heap.remove_max()
-        heap.remove_max()
         
         let input = Array(1 ... 20).shuffled()
         for i in input {
             heap.insert(i)
         }
-
+        print(heap.count)
         
         XCTAssertEqual(heap.remove_max(), 20)
         XCTAssertEqual(heap.remove_max(), 19)
-//        XCTAssertEqual(heap.remove_max(), 18)
-//        XCTAssertEqual(heap.remove_max(), 17)
-//        XCTAssertEqual(heap.remove_max(), 16)
-//        XCTAssertEqual(heap.remove_max(), 15)
-//        XCTAssertEqual(heap.remove_max(), 14)
-//        XCTAssertEqual(heap.remove_max(), 13)
-//        XCTAssertEqual(heap.remove_max(), 12)
-//        XCTAssertEqual(heap.remove_max(), 11)
-//        XCTAssertEqual(heap.remove_max(), 10)
-//        XCTAssertEqual(heap.remove_max(), 9)
+        XCTAssertEqual(heap.remove_max(), 18)
+        XCTAssertEqual(heap.remove_max(), 17)
+        XCTAssertEqual(heap.remove_max(), 16)
+        XCTAssertEqual(heap.remove_max(), 15)
+        XCTAssertEqual(heap.remove_max(), 14)
+        XCTAssertEqual(heap.remove_max(), 13)
+        XCTAssertEqual(heap.remove_max(), 12)
+        XCTAssertEqual(heap.remove_max(), 11)
+        XCTAssertEqual(heap.remove_max(), 10)
+        XCTAssertEqual(heap.remove_max(), 9)
         /* One 9 was still in the heap from before */
-//        XCTAssertEqual(heap.remove_max(), 9)
-//        XCTAssertEqual(heap.remove_max(), 8)
-//        XCTAssertEqual(heap.remove_max(), 7)
-//        XCTAssertEqual(heap.remove_max(), 6)
-//        XCTAssertEqual(heap.remove_max(), 5)
-//        XCTAssertEqual(heap.remove_max(), 4)
+        XCTAssertEqual(heap.remove_max(), 9)
+        XCTAssertEqual(heap.remove_max(), 8)
+        XCTAssertEqual(heap.remove_max(), 7)
+        XCTAssertEqual(heap.remove_max(), 6)
+        XCTAssertEqual(heap.remove_max(), 5)
+        XCTAssertEqual(heap.remove_max(), 4)
         /* One 4 was still in the heap from before */
-//        XCTAssertEqual(heap.remove_max(), 4)
-//        XCTAssertEqual(heap.remove_max(), 3)
-//        XCTAssertEqual(heap.remove_max(), 2)
-//        XCTAssertEqual(heap.remove_max(), 1)
+        XCTAssertEqual(heap.remove_max(), 4)
+        XCTAssertEqual(heap.remove_max(), 3)
+        XCTAssertEqual(heap.remove_max(), 2)
+        XCTAssertEqual(heap.remove_max(), 1)
         /* One 1 was still in the heap from before */
-//        XCTAssertEqual(heap.remove_max(), 1)
+        XCTAssertEqual(heap.remove_max(), 1)
 
         XCTAssertEqual(heap.count, 0)
     }
@@ -144,12 +141,6 @@ final class BinaryHeapTests : XCTestCase {
         let beta = _Task(name: "Tzu-han", priority: 1)
         let gamma = _Task(name: "Ya-hsüan", priority: 19342)
 
-        heap.insert(alpha)
-        heap.insert(alpha)
-        heap.insert(alpha)
-        heap.insert(alpha)
-        heap.insert(alpha)
-        heap.insert(alpha)
         heap.insert(alpha)
         heap.insert(beta)
         heap.insert(gamma)

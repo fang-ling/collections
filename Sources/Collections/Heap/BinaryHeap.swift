@@ -53,7 +53,7 @@ func bh_right(_ i : Int) -> Int { return 2 * i + 2 }
 //----------------------------------------------------------------------------//
 extension BinaryHeap {
     ///Maintain the max heap property from node i all the way up to root.
-//    @inlinable
+    @inlinable
     mutating func max_heapify_up(_ i : Int) {
         if i == 0 { /* We are at root node now. */
             return
@@ -69,7 +69,7 @@ extension BinaryHeap {
     }
 
     ///Maintain the max heap property from node i all the way down to leaf.
-//    @inlinable
+    @inlinable
     mutating func max_heapify_down(_ i : Int) {
         if i >= count / 2 { /* No children, we are done */
             return
@@ -78,14 +78,14 @@ extension BinaryHeap {
         /* Find i's largest children j. */
         if bh_left(i) < count && bh_right(i) < count { /* Both children exist */
             j =
-              _storage[bh_left(i)] > _storage[bh_right(j)]
-              ? bh_left(i)
-              : bh_right(j)
+              _storage[bh_left(i)] > _storage[bh_right(i)] ?
+              bh_left(i) :
+              bh_right(i)
         } else if bh_left(i) < count && bh_right(i) >= count { /* Left only */
             j = bh_left(i)
         } else if bh_left(i) >= count && bh_right(i) < count { /* Right only */
             j = bh_right(i)
-        } else {
+        } else { /* Will never happen */
             print("error")
             return
         }
@@ -116,7 +116,7 @@ extension BinaryHeap {
 //----------------------------------------------------------------------------//
 extension BinaryHeap {
     /// Inserts a new item into heap.
-//    @inlinable
+    @inlinable
     public mutating func insert(_ new_element : Element) {
         _storage.append(new_element)
         max_heapify_up(count - 1)
@@ -128,7 +128,7 @@ extension BinaryHeap {
 //----------------------------------------------------------------------------//
 extension BinaryHeap {
     /// Removes the max item in the heap.
-//    @inlinable
+    @inlinable
     @discardableResult
     public mutating func remove_max() -> Element {
         _storage.swapAt(0, count - 1)
