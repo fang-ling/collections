@@ -10,6 +10,11 @@ import Foundation
 public struct AdjacencyEdge : Equatable {
     public var v : Int
     public var weight : Int
+
+    public init(v : Int, weight : Int) {
+        self.v = v
+        self.weight = weight
+    }
 }
 
 public struct AdjacencyList {
