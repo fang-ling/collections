@@ -9,11 +9,11 @@ import Foundation
 
 public struct AdjacencyEdge : Equatable {
     public var v : Int
-    public var weight : Int
+    public var w : Int
 
-    public init(v : Int, weight : Int) {
+    public init(v : Int, w : Int) {
         self.v = v
-        self.weight = weight
+        self.w = w
     }
 }
 
@@ -21,6 +21,7 @@ public struct AdjacencyList {
     /* Number of vertices in this graph */
     public var count : Int
     public var adj : [[AdjacencyEdge]]
+    public var edges : [(Int, Int, Int)]
 
     public init(count : Int) {
         self.count = count
@@ -28,19 +29,16 @@ public struct AdjacencyList {
           repeating: [AdjacencyEdge](),
           count: count
         )
+        edges = [(Int, Int, Int)]()
     }
 
-    public mutating func insert_edge(u : Int, v : Int, weight : Int = 1) {
-        adj[u].append(AdjacencyEdge(v: v, weight: weight))
+    public init(count : Int, edges : [(Int, Int, Int)]) {
+        self.init(count: count)
+        self.edges = edges
     }
 
-    /* O(n) time */
-    public mutating func contains(u : Int, v : Int) -> Bool {
-        for e in adj[u] {
-            if e.v == v {
-                return true
-            }
-        }
-        return false
+    public mutating func insert_edge(u : Int, v : Int, w : Int = 1) {
+        adj[u].append(AdjacencyEdge(v: v, w: w))
+        edges.append((u, v, w))
     }
 }
