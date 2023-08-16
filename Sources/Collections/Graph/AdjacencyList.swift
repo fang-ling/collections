@@ -35,6 +35,9 @@ public struct AdjacencyList {
     public init(count : Int, edges : [(Int, Int, Int)]) {
         self.init(count: count)
         self.edges = edges
+        for e in edges {
+            adj[e.0].append(AdjacencyEdge(v: e.1, w: e.2))
+        }
     }
 
     public mutating func insert_edge(u : Int, v : Int, w : Int = 1) {
