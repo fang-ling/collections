@@ -171,5 +171,14 @@ extension BinaryHeap {
 //                        Accessing Elements                                  //
 //----------------------------------------------------------------------------//
 extension BinaryHeap {
-  
+  /// - Complexity: O(lg n), where n is the length of the heap
+  @inlinable
+  public mutating func replace(at i : Int, with element : Element) {
+    if element < _storage[i] {
+      fatalError("new element is smaller than current element")
+    }
+    
+    _storage[i] = element
+    max_heapify_up(i)
+  }
 }

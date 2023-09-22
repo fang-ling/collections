@@ -159,4 +159,13 @@ final class BinaryHeapTests : XCTestCase {
     XCTAssertEqual(heap.remove_max(), 19358)
     XCTAssertEqual(heap.count, 0)
   }
+  
+  func test_replace() {
+    var heap : BinaryHeap = [12333, 12361, 19358, 19342]
+    // Heap's _storage should be: [19358, 19342, 12333, 12361]
+    heap.replace(at: 3, with: 19348)
+    for i in [12333, 19342, 19348, 19358].sorted().reversed() {
+      XCTAssertEqual(heap.remove_max(), i)
+    }
+  }
 }
