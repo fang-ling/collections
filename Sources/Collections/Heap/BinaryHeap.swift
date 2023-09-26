@@ -10,9 +10,13 @@ import Foundation
 //----------------------------------------------------------------------------//
 //                         Structure Definition                               //
 //----------------------------------------------------------------------------//
-public struct BinaryHeap<Element : Comparable> {
+public struct BinaryHeap<Element : Comparable & Hashable> {
   @usableFromInline
   var _storage : [Element]
+  
+  /// A dictionary mapping elements to indices
+  @usableFromInline
+  var _dict : [Element : Int]
   
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
   //                     Inspection of a BinaryHeap                         //
@@ -31,7 +35,8 @@ public struct BinaryHeap<Element : Comparable> {
   /// Creates a new, empty heap.
   @inlinable
   public init() {
-    _storage = [Element]()
+    _storage = []
+    _dict = [:]
   }
   
   /// Initializes a heap from a sequence.
@@ -39,8 +44,12 @@ public struct BinaryHeap<Element : Comparable> {
   @inlinable
   public init<S : Sequence>(_ elements : S) where S.Element == Element {
     _storage = Array(elements)
+    _dict = [:]
     guard count > 1 else { return }
     
+    for i in _storage.indices {
+      _dict[_storage[i]] = i
+    }
     for i in stride(from: count / 2 - 1, through: 0, by: -1) {
       max_heapify_down(i)
     }
@@ -74,6 +83,14 @@ func bh_left(_ i : Int) -> Int { return 2 * i + 1 }
 @inlinable
 func bh_right(_ i : Int) -> Int { return 2 * i + 2 }
 
+extension BinaryHeap {
+  @inlinable
+  mutating func swap_at(_ i : Int, _ j : Int) {
+    _dict[_storage[i]] = j
+    _dict[_storage[j]] = i
+    _storage.swapAt(i, j)
+  }
+}
 
 //----------------------------------------------------------------------------//
 //                         Maintenance of the BinaryHeap property             //
@@ -86,7 +103,7 @@ extension BinaryHeap {
       return
     }
     if _storage[bh_parent(i)] <= _storage[i] {
-      _storage.swapAt(bh_parent(i), i) /* Exchange i with parent(i) */
+      swap_at(bh_parent(i), i) /* Exchange i with parent(i) */
       /*
        * Current node is satisfy max heap property, but maybe not its
        * parent. Fix this recursively.
@@ -104,10 +121,7 @@ extension BinaryHeap {
     var j = 0
     /* Find i's largest children j. */
     if bh_left(i) < count && bh_right(i) < count { /* Both children exist */
-      j =
-      _storage[bh_left(i)] > _storage[bh_right(i)] ?
-      bh_left(i) :
-      bh_right(i)
+      j = _storage[bh_left(i)] > _storage[bh_right(i)] ? bh_left(i) : bh_right(i)
     } else if bh_left(i) < count && bh_right(i) >= count { /* Left only */
       j = bh_left(i)
     } else if bh_left(i) >= count && bh_right(i) < count { /* Right only */
@@ -121,7 +135,7 @@ extension BinaryHeap {
      * heap property. Fix it by swap i.key with j.key and then recur on j.
      */
     if _storage[i] < _storage[j] {
-      _storage.swapAt(i, j)
+      swap_at(i, j)
       max_heapify_down(j)
     }
   }
@@ -147,6 +161,7 @@ extension BinaryHeap {
   @inlinable
   public mutating func insert(_ new_element : Element) {
     _storage.append(new_element)
+    _dict[new_element] = count - 1
     max_heapify_up(count - 1)
   }
 }
@@ -159,9 +174,10 @@ extension BinaryHeap {
   @inlinable
   @discardableResult
   public mutating func remove_max() -> Element {
-    _storage.swapAt(0, count - 1)
+    swap_at(0, count - 1)
     /* It's necessary to first do remove to update `count` */
     let r = _storage.removeLast()
+    _dict.removeValue(forKey: r)
     max_heapify_down(0)
     return r
   }
@@ -173,7 +189,10 @@ extension BinaryHeap {
 extension BinaryHeap {
   /// - Complexity: O(lg n), where n is the length of the heap
   @inlinable
-  public mutating func replace(at i : Int, with element : Element) {
+  public mutating func replace(_ old_element : Element, with element : Element) {
+    guard let i = _dict[old_element] else {
+      fatalError("no such element: \(old_element)")
+    }
     if element < _storage[i] {
       fatalError("new element is smaller than current element")
     }

@@ -34,7 +34,7 @@ final class BinaryHeapTests : XCTestCase {
     XCTAssertEqual(heap.count, 1)
   }
   
-  struct _Task : Comparable & Equatable {
+  struct _Task : Comparable & Equatable & Hashable {
     var name : String
     var priority : Int
     
@@ -161,10 +161,10 @@ final class BinaryHeapTests : XCTestCase {
   }
   
   func test_replace() {
-    var heap : BinaryHeap = [12333, 12361, 19358, 19342]
+    var heap : BinaryHeap = [12333, 12361, 19358, 19342, 12361]
     // Heap's _storage should be: [19358, 19342, 12333, 12361]
-    heap.replace(at: 3, with: 19348)
-    for i in [12333, 19342, 19348, 19358].sorted().reversed() {
+    heap.replace(12361, with: 19348)
+    for i in [12333, 19342, 19348, 19358, 12361].sorted().reversed() {
       XCTAssertEqual(heap.remove_max(), i)
     }
   }
